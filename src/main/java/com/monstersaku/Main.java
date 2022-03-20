@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 
 public class Main {
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
