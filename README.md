@@ -20,3 +20,5 @@ What happen is when you use `./gradlew run`, it will start the main function in 
 For this app, the main function lives in `Main.java`.
 
 You can explore more about gradle [here](https://guides.gradle.org/creating-new-gradle-builds/)
+
+hello
