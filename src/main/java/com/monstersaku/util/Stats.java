@@ -31,7 +31,7 @@ public class Stats {
     public void setSpesialAttack (double spesialAttack){
         this.spesialAttack = spesialAttack;
     }
-    public void setSepsialDefense (double spesialDefense){
+    public void setSpesialDefense (double spesialDefense){
         this.spesialDefense = spesialDefense;
     }
     public void setSpeed (double speed){
