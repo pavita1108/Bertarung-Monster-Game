@@ -15,8 +15,7 @@ public class Monster {
     private boolean isParalyze;
     
 
-    public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves, 
-    boolean isBurn, boolean isPoison, boolean isSleep, boolean isParalyze){
+    public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
         
         this.name = name;
         this.elmtTypes = elementTypes;
