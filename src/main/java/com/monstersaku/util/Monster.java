@@ -21,11 +21,6 @@ public class Monster {
         this.elmtTypes = elementTypes;
         this.baseStats = baseStats;
         this.moves = moves;
-
-        this.isBurn = isBurn;
-        this.isPoison = isPoison;
-        this.isSleep = isSleep;
-        this.isParalyze = isParalyze;
     }
 
     public String getNameOfMonster(){

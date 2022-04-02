@@ -5,7 +5,6 @@ import com.monstersaku.util.Move;
 import com.monstersaku.util.Monster;
 import com.monstersaku.util.ElementType;
 import com.monstersaku.util.Effectivity;
-import com.monstersaku.util.ElementEffectivityKey;
 import com.monstersaku.util.Stats;
 import com.monstersaku.util.NormalMove;
 import com.monstersaku.util.SpecialMove;
