@@ -1,29 +1,33 @@
 package com.monstersaku.util;
 
-public class Move {
+public class Move implements Cloneable{
     private int id;
     private String name;
     private ElementType elementType;
     private int accuracy;
     private int priority;
     private int ammunition;
-    private int basepower;
 
-    public Move (){
-
+    public Move (int id,String name, ElementType elementType, int accuracy, int priority, int ammunition) {
+        this.id = id;
+        this.name = name;
+        this.elementType = elementType;
+        this.accuracy = accuracy;
+        this.priority = priority;
+        this.ammunition = ammunition;
     }
 
-    public void DefaultMove (){
-        Move defaultmove = new Move();
-        defaultmove.id=99999;//idmove
-        defaultmove.ammunition=9999999;
-        defaultmove.basepower=50;
-        defaultmove.priority=0;
-
+    public double damage (Monster attacker, Monster target,int basePower) {
+        double damage;
+        damage= (double)Math.floor((basePower * (attacker.getStats().getAttack()/target.getStats().getDefense() + 2 ) * Math.random() ));
+        return damage;
     }
 
-    public void NormalMove (Monster player , Monster target){
-        float finaldamage= (float)Math.floor((this.basepower * (player.getStats().getAttack()/target.getStats().getDefense() + 2 ) * Math.random() ));
-        // ini belum effectivity + status kondisi
-    }
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    };
+
+
+
 }
