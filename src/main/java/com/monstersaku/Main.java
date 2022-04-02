@@ -1,11 +1,8 @@
 package com.monstersaku;
 import com.monstersaku.util.*;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
 
 
 public class Main {
@@ -19,6 +16,7 @@ public class Main {
         ArrayList<Move> listMoves = new ArrayList<>();
         ArrayList<Monster> listMonster = new ArrayList<>();
         HashMap<ElementEffectivityKey,Double> map = new HashMap<>();
+
         //mulai baca csv pake try catch
         try{
             //baca movepool
@@ -172,8 +170,57 @@ public class Main {
             System.out.println("ERROR");
         }
         
-        ElementEffectivityKey a =  new ElementEffectivityKey(ElementType.FIRE, ElementType.WATER);
-        System.out.println(Effectivity.getEffectivity(a, map));
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter player 1 name : ");
+        String player1name = scan.nextLine();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.println("Enter player 2 name : ");
+        String player2name = scan.nextLine();
+        System.out.println("Player 1 name : " + player1name);
+        System.out.println("Player 2 name : " + player2name);
+        Random rand = new Random();
+        Integer upperbound = listMonster.size();
+        ArrayList<Monster> listOfPlayer1Monsters = new ArrayList<Monster>();
+        for(int i = 0; i < 6; i++){
+            Integer randommonster = rand.nextInt(upperbound);
+            listOfPlayer1Monsters.add(listMonster.get(randommonster));
+        }
+        ArrayList<Monster> listOfPlayer2Monsters = new ArrayList<Monster>();
+        for(int i = 0; i < 6; i++){
+            Integer randommonster = rand.nextInt(upperbound);
+            listOfPlayer2Monsters.add(listMonster.get(randommonster));
+        }
+        Player p1 = new Player(player1name, listOfPlayer1Monsters);
+        Player p2 = new Player(player2name, listOfPlayer2Monsters);
+        p1.printMonsters();
+        p2.printMonsters();
 
+        int turn = 0;
+        boolean p1Lose = false;
+        boolean p2Lose = false;
+        Monster p1ActiveMons = p1.getListMonster().get(0);
+        Monster p2ActiveMons = p2.getListMonster().get(0);
+        while (!p1Lose && !p2Lose) {
+            turn++;
+            System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+            System.out.println("Select action : ");
+            System.out.println("1. Move!!!");
+            System.out.println("2. Switch!!!");
+            int select1 = scan.nextInt();
+                if(select1 == 1){
+                    System.out.printf("%s move : %n", p1ActiveMons.getName());
+                    for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
+                        System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+                    }
+                }
+                else if (select1 == 2){
+                    p1.printMonsters();
+                    System.out.println("Choose Id Monster : ");
+                    int sel = scan.nextInt();
+                    p1ActiveMons = p1.getListMonster().get(sel-1);
+                    System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                }
+        }
+        scan.close();
     }
 }

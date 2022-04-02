@@ -23,7 +23,7 @@ public class Monster {
         this.moves = moves;
     }
 
-    public String getNameOfMonster(){
+    public String getName(){
         return this.name;
     }
 

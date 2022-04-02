@@ -36,4 +36,32 @@ public class Player {
         this.jumlahMonster = jumlahMonster;
     }
 
+    public void printMonsters(){
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.printf("%s's Monsters%n", getNama());
+        int i = 0;
+        for(Monster monster : listMonster){
+            i++;
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.printf("Id monster : %s%n", i);
+            System.out.printf("Nama monster : %s%n", monster.getName());
+            List<ElementType> elementTypes = monster.getElementTypes();
+            for (ElementType elementType : elementTypes){
+                if(elementType.equals(ElementType.NORMAL)){
+                    System.out.printf("Element Type : %s%n", ElementType.NORMAL);
+                }
+                else if(elementType.equals(ElementType.FIRE)){
+                    System.out.printf("Element Type : %s%n", ElementType.FIRE);
+                }
+                else if(elementType.equals(ElementType.WATER)){
+                    System.out.printf("Element Type : %s%n", ElementType.WATER);
+                }   
+                else if(elementType.equals(ElementType.GRASS)){
+                    System.out.printf("Element Type : %s%n", ElementType.GRASS);
+                } 
+            }
+            System.out.printf("Stats %s : %n", monster.getName());
+        }
+    }
+
 }
