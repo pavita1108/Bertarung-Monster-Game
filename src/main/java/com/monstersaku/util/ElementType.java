@@ -18,7 +18,7 @@ public enum  ElementType {
 
     /*Read CSV File*/
     /*FILE PATHNYA JANGAN LUPA GANTI !!!!*/ 
-    private File path = new File("C:/Users/User/Documents/OOP/TUBES_OOP/monster-saku-project-templat/src/main/resources/com/monstersaku/configs/element-type-effectivity-chart.csv");
+    private static final File path = new File("C:/Users/User/Documents/OOP/TUBES_OOP/monster-saku-project-templat/src/main/resources/com/monstersaku/configs/element-type-effectivity-chart.csv");
 
 
     private HashMap<ElementEffectivityKey, Float> configEffectivity() {
@@ -36,7 +36,7 @@ public enum  ElementType {
         } 
     }
     public float getEffectivity(ElementEffectivityKey elmtKey){
-        return map.get(elmtKey);
+        return map.getOrDefault(elmtKey, 1F);
     }
 
     // public static ElementType getInstance() throws IOException{
