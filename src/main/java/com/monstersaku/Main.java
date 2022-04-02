@@ -1,20 +1,12 @@
 package com.monstersaku;
-
-import com.monstersaku.util.CSVReader;
-import com.monstersaku.util.Move;
-import com.monstersaku.util.Monster;
-import com.monstersaku.util.ElementType;
-import com.monstersaku.util.Effectivity;
-import com.monstersaku.util.Stats;
-import com.monstersaku.util.NormalMove;
-import com.monstersaku.util.SpecialMove;
-import com.monstersaku.util.StatusMove;
-
+import com.monstersaku.util.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class Main {
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
@@ -26,6 +18,7 @@ public class Main {
         //atribut untuk nyimpen bacaan csv
         ArrayList<Move> listMoves = new ArrayList<>();
         ArrayList<Monster> listMonster = new ArrayList<>();
+        HashMap<ElementEffectivityKey,Double> map = new HashMap<>();
         //mulai baca csv pake try catch
         try{
             //baca movepool
@@ -126,17 +119,61 @@ public class Main {
 
                 //bikin object
                 Monster baru = new Monster(name, eltype, basestats, monsmove);
-                listMonster.add(baru);
-
-                //nyalain config element type effectivity
-                Effectivity.configEffectivity();
-
+                listMonster.add(baru);  
+                
             }   
+
+            CSVReader reader2 = new CSVReader(new File(Main.class.getResource("configs/element-type-effectivity-chart.csv").toURI()), ";");
+            
+            reader2.setSkipHeader(true);
+            List<String[]> lines2 = reader2.read();
+            
+            for (String [] line2 : lines2){
+                String source = line2[0];
+                String target = line2[1];
+                
+                Double x = Double.parseDouble(line2[2]);          
+                ElementType s = ElementType.NORMAL;
+                ElementType t = ElementType.NORMAL;
+                switch (source){
+                    case ("NORMAL"):
+                        s = ElementType.NORMAL;
+                        break;
+                    case ("FIRE"):
+                        s = ElementType.FIRE;
+                        break;  
+                    case ("WATER"):
+                        s = ElementType.WATER;
+                        break; 
+                    case ("GRASS"):
+                        s = ElementType.GRASS;
+                        break; 
+                }
+                switch (target){
+                    case ("NORMAL"):
+                        t = ElementType.NORMAL;
+                        break;
+                    case ("FIRE"):
+                        t = ElementType.FIRE;
+                        break;  
+                    case ("WATER"):
+                        t = ElementType.WATER;
+                        break; 
+                    case ("GRASS"):
+                        t = ElementType.GRASS;
+                        break; 
+                }
+                ElementEffectivityKey source_target = new ElementEffectivityKey(s,t);
+                map.put(source_target, x);
+            }
             
         }
         catch (Exception e){
             System.out.println("ERROR");
         }
         
+        ElementEffectivityKey a =  new ElementEffectivityKey(ElementType.FIRE, ElementType.WATER);
+        System.out.println(Effectivity.getEffectivity(a, map));
+
     }
 }
