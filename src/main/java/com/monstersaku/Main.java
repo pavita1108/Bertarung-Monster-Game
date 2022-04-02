@@ -5,6 +5,7 @@ import com.monstersaku.util.Move;
 import com.monstersaku.util.Monster;
 import com.monstersaku.util.ElementType;
 import com.monstersaku.util.Effectivity;
+import com.monstersaku.util.ElementEffectivityKey;
 import com.monstersaku.util.Stats;
 import com.monstersaku.util.NormalMove;
 import com.monstersaku.util.SpecialMove;
@@ -26,7 +27,6 @@ public class Main {
         //atribut untuk nyimpen bacaan csv
         ArrayList<Move> listMoves = new ArrayList<>();
         ArrayList<Monster> listMonster = new ArrayList<>();
-        ArrayList<Effectivity> listEffectivity = new ArrayList<>();
         //mulai baca csv pake try catch
         try{
             //baca movepool
@@ -128,61 +128,20 @@ public class Main {
                 //bikin object
                 Monster baru = new Monster(name, eltype, basestats, monsmove);
                 listMonster.add(baru);
-            }
-            
-            //baca element types effectivity
-            CSVReader reader2 = new CSVReader(new File(Main.class.getResource("configs/element-type-effectivity-chart.csv").toURI()), ";");
-            reader2.setSkipHeader(true);
-            List<String[]> lines2 = reader2.read();
-            
-            for (String[] line2 : lines2){
-                ElementType s , t;
-                
-                s = null;
-                t = null;
-                String eff = line2[2];
-                double effectivity = Double.parseDouble(eff);
-                String source = line2[0];
-                String target = line2[1];
-                
-                switch (source){
-                    case ("NORMAL"):
-                        s = ElementType.NORMAL;
-                        break;
-                    case ("FIRE"):
-                        s = ElementType.FIRE;
-                        break;  
-                    case ("WATER"):
-                        s = ElementType.WATER;
-                        break; 
-                    case ("GRASS"):
-                        s = ElementType.GRASS;
-                        break; 
-                }
 
-                switch (target){
-                    case ("NORMAL"):
-                        t = ElementType.NORMAL;
-                        break;
-                    case ("FIRE"):
-                        t = ElementType.FIRE;
-                        break;  
-                    case ("WATER"):
-                        t = ElementType.WATER;
-                        break; 
-                    case ("GRASS"):
-                        t = ElementType.GRASS;
-                        break; 
-                }
-                
-                Effectivity b = new Effectivity(s, t, effectivity);
-                
-                listEffectivity.add(b);
+                //nyalain config element type effectivity
+                Effectivity.configEffectivity();
+
             }
+            
             
         }
         catch (Exception e){
             System.out.println("ERROR");
         }
+        
+        ElementEffectivityKey a = new ElementEffectivityKey(ElementType.FIRE, ElementType.WATER);
+        
+        System.out.println( Effectivity.getEffectivity(a));
     }
 }
