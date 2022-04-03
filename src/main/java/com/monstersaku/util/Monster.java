@@ -13,6 +13,7 @@ public class Monster {
     private boolean isPoison;
     private boolean isSleep;
     private boolean isParalyze;
+    private int sleepCounter;
     
 
     public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
@@ -21,6 +22,12 @@ public class Monster {
         this.elmtTypes = elementTypes;
         this.baseStats = baseStats;
         this.moves = moves;
+
+        this.isBurn = false;
+        this.isPoison = false;
+        this.isSleep = false;
+        this.isParalyze = false;
+        this.sleepCounter = 0;
     }
 
     public String getName(){
@@ -70,6 +77,10 @@ public class Monster {
         return this.isParalyze;
     }
 
+    public int getSleepCounter() {
+        return this.sleepCounter;
+    }
+
         // setter status condition 
     public void setIsBurn(boolean status) {
         this.isBurn = status;
@@ -85,6 +96,10 @@ public class Monster {
 
     public void setIsParalyze(boolean status) {
         this.isParalyze = status;
+    }
+
+    public void setSleepCounter(int num) {
+        this.sleepCounter = num;
     }
 
         // method untuk cek apakah monster ada condition yang aktif

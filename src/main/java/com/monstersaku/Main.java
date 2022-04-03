@@ -206,28 +206,369 @@ public class Main {
 
 
 
+        // declare variable loop gameplaye
+        boolean p1PilihanMoveValid;
+        boolean p2PilihanMoveValid;
+        boolean p1BisaMove;
+        boolean p2BisaMove;
+        int select1;
+        int select2;
+
         //loop gameplay
         while (!p1Lose && !p2Lose) {
+
+            p1PilihanMoveValid = false;
+            p2PilihanMoveValid = false;
+            p1BisaMove = false;
+            p2BisaMove = false;
+
             turn++;
+            /* Ngecek semua monster p1 dan p2 status condition sleep
+                setiap ada monster yang condition sleep
+                kurangin atribut sleepCounternya
+
+                caranya monster.setSleepCounter(monster.getSleepCounter() - 1);
+
+                kalo udah di angka 0 sleep counternya, ubah monster isSleep nya jadi ke false
+
+            */
+
+            /* Ngecek semua monster p1 dan p2 ada yang Burn apa engga,
+                setiap ada yang burn, kurangin HP sesuai ketentuan Burn 
+            
+            */
+
+            /* Ngecek semua monster p1 dan p2 ada yang poison apa engga,
+                setiap ada yang poison, kurangin HP sesuai ketentuan poison 
+            
+            */
+
+
+            // PLAYER 1 nentuin TURN (BELUM EKSEKUSI)
             System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
             System.out.println("Select action : ");
             System.out.println("1. Move!!!");
             System.out.println("2. Switch!!!");
-            int select1 = scan.nextInt();
-                if(select1 == 1){
-                    System.out.printf("%s move : %n", p1ActiveMons.getName());
-                    for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
-                        System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+            select1 = scan.nextInt();
+
+            // move
+            if(select1 == 1){
+                // ngecek aktive monster sleep atau paralyzed apa engga
+                if (p1ActiveMons.getIsSleep()) {
+                    // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
+                    System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
+                }
+                else {
+                    // ngecek paralyzed
+                    if (p1ActiveMons.getIsParalyze()) {
+                        // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
+
+                    }
+                    
+                    if (p1BisaMove) {
+                        System.out.printf("%s move : %n", p1ActiveMons.getName());
+                        for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
+                            System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+                        }
+
+                        // milih move
+                        while (!p1PilihanMoveValid) {
+                            // input pilihan move
+
+                            // ngecek type move
+
+                            // kalo move nya default
+                                p1PilihanMoveValid = true;
+                            // kalo move nya special    
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p1PilihanMoveValid = true;
+
+                            // kalo move nya normal
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p1PilihanMoveValid = true;
+
+                            // kalo movenya buff
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p1PilihanMoveValid = true;
+
+                        }
+                    }
+                    else {
+                        System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
                     }
                 }
-                else if (select1 == 2){
-                    p1.printMonsters();
-                    System.out.println("Choose Id Monster : ");
-                    int sel = scan.nextInt();
-                    p1ActiveMons = p1.getListMonster().get(sel-1);
-                    System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                
+                
+                
+
+            }
+
+            // switch pokemon
+            else if (select1 == 2){
+                p1.printMonsters();
+                System.out.println("Choose Id Monster : ");
+                int sel = scan.nextInt();
+                
+                // bikin reset status buff untuk monster yang diswitch
+
+                // ngerubah aktif monster
+                p1ActiveMons = p1.getListMonster().get(sel-1);
+                System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+            }
+
+            // PLAYER 2 nentuin TURN (BELUM EKSEKUSI)
+            System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
+            System.out.println("Select action : ");
+            System.out.println("1. Move!!!");
+            System.out.println("2. Switch!!!");
+            select2 = scan.nextInt();
+
+            // move
+            if(select2 == 1){
+                // ngecek aktive monster sleep atau paralyzed apa engga
+                if (p2ActiveMons.getIsSleep()) {
+                    // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
+                    System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
                 }
+                else {
+                    // ngecek paralyzed
+                    if (p2ActiveMons.getIsParalyze()) {
+                        // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
+
+                    }
+                    
+                    if (p2BisaMove) {
+                        System.out.printf("%s move : %n", p2ActiveMons.getName());
+                        for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
+                            System.out.printf("%s%n", p2ActiveMons.getMoves().get(i).getName());
+                        }
+
+                        // milih move
+                        while (!p2PilihanMoveValid) {
+                            // input pilihan move
+
+                            // ngecek type move
+
+                            // kalo move nya default
+                                p2PilihanMoveValid = true;
+                            // kalo move nya special    
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p2PilihanMoveValid = true;
+
+                            // kalo move nya normal
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p2PilihanMoveValid = true;
+
+                            // kalo movenya buff
+                                // ngecek amunisi
+
+                                // kalo bisa dipake
+                                    p2PilihanMoveValid = true;
+
+                        }
+                    }
+                    else {
+                        System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
+                    }
+                }
+                
+                
+                
+
+            }
+
+            // switch pokemon
+            else if (select2 == 2){
+                p2.printMonsters();
+                System.out.println("Choose Id Monster : ");
+                int sel = scan.nextInt();
+
+                // bikin reset status buff untuk monster yang diswitch
+
+                // ngerubah aktif monster
+                p1ActiveMons = p2.getListMonster().get(sel-1);
+                System.out.printf("Player 1 Active Monster : %s%n", p2ActiveMons.getName());
+            }
+
+            // PROSES EKSEKUSI PILIHAN KEDUA PLAYER
+
+            // kalo kedua player ngelakuin move
+            if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == true)) {
+                // ngecek priority mana yang lebih gede
+
+                // kalo priority p1 lebih gede
+                    // eksekusi move pilihan p1 duluan
+
+                    // kalo movenya normal
+                        // eksekusi
+
+                    // kalo movenya spesial
+                        // eksekusi
+                    
+                    // kalo movenya default
+                        // eksekusi
+
+                    // kalo movenya buff
+                        // ngecek apa move nya ngaruh ke musuh apa engga
+                        // kalo ngaruh ke musuh
+                            // cek musuh status conditionnya ada yang aktif apa engga
+
+                            // kalo ga ada yg aktif
+                                // kalo bikin sleep musuh
+                                    // eksekusi, jangan lupa kasih counter sleep
+                                // kalo bikin paralyze musuh
+                                    //eksekusi
+                                // kalo bikin burn musuh
+                                    // eksekusi
+                                // kalo bikin poison musuh
+                                    // eksekusi
+                        
+                        // kalo ga ngaruh ke musuh
+                            // eksekusi
+
+
+                    // kurangin amunisi move p1 yang dipake
+
+                    // ngecek stats condition p2 (barangkali kena gara-gara move p1 yang duluan)
+                    if (p2ActiveMons.getIsSleep()) {
+                        System.out.println("Monster ini baru saja terkena efek sleep dari move p1 sebelumnya");
+                    }
+                    else if (p2ActiveMons.getIsParalyze()) {
+                        System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                        System.out.println("Efek 25% akan dirandom...");
+                        // ngerandom 25% bisa move apa engga simpen ke p2BisaMove
+
+                        if (p2BisaMove) {
+                            // eksekusi move pilihan p2 beserta efek buffnya
+
+                            // kalo movenya normal
+                                // eksekusi
+
+                            // kalo movenya spesial
+                                // eksekusi
+                    
+                            // kalo movenya default
+                                // eksekusi
+
+                            // kalo movenya buff
+                                // ngecek apa move nya ngaruh ke musuh apa engga
+
+                                // kalo ngaruh ke musuh
+                                    // cek musuh status conditionnya ada yang aktif apa engga
+
+                                    // kalo ga ada yg aktif
+                                        // kalo bikin sleep musuh
+                                            // eksekusi, jangan lupa kasih counter sleep
+                                        // kalo bikin paralyze musuh
+                                            //eksekusi
+                                        // kalo bikin burn musuh
+                                            // eksekusi
+                                        // kalo bikin poison musuh
+                                            // eksekusi
+                                
+                                // kalo ga ngaruh ke musuh
+                                    // eksekusi
+
+                            // kurangin amunisi move yang dipake
+
+                        }
+                        else {
+                            System.out.println("Monster tidak bisa move karena efek 25% paralyze aktif");
+                        }
+                    }
+                    
+            }
+            // kalo p1 doang yang move, p2 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
+            else if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == false)) {
+                // yaudah tinggal eksekusi move p1
+                
+                // kalo movenya normal
+                    // eksekusi
+
+                // kalo movenya spesial
+                    // eksekusi
+                
+                // kalo movenya default
+                    // eksekusi
+
+                // kalo movenya buff
+                    // ngecek apa move nya ngaruh ke musuh apa engga
+                    // kalo ngaruh ke musuh
+                        // cek musuh status conditionnya ada yang aktif apa engga
+
+                        // kalo ga ada yg aktif
+                            // kalo bikin sleep musuh
+                                // eksekusi, jangan lupa kasih counter sleep
+                            // kalo bikin paralyze musuh
+                                //eksekusi
+                            // kalo bikin burn musuh
+                                // eksekusi
+                            // kalo bikin poison musuh
+                                // eksekusi
+                    
+                    // kalo ga ngaruh ke musuh
+                        // eksekusi
+
+                // kurangin amunisi move p1 yang dipilih
+            }
+
+            // kalo p2 doang yang move, p1 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
+            else if ((p2PilihanMoveValid == true) && (p1PilihanMoveValid == false)) {
+                // yaudah tinggal eksekusi move p2
+                
+                // kalo movenya normal
+                    // eksekusi
+
+                // kalo movenya spesial
+                    // eksekusi
+                
+                // kalo movenya default
+                    // eksekusi
+
+                // kalo movenya buff
+                    // ngecek apa move nya ngaruh ke musuh apa engga
+                    // kalo ngaruh ke musuh
+                        // cek musuh status conditionnya ada yang aktif apa engga
+
+                        // kalo ga ada yg aktif
+                            // kalo bikin sleep musuh
+                                // eksekusi, jangan lupa kasih counter sleep
+                            // kalo bikin paralyze musuh
+                                //eksekusi
+                            // kalo bikin burn musuh
+                                // eksekusi
+                            // kalo bikin poison musuh
+                                // eksekusi
+                    
+                    // kalo ga ngaruh ke musuh
+                        // eksekusi
+
+                // kurangin amunisi move p2 yang dipilih
+            }
+
+            // kondisi else ga terjadi apa apa jadi gausha ditulis (karena ga ada yang move)
+
+
+            // ----------- NGECEK UDAH ADA YANG WIN APA BELUM --------------
+
+            // cek semua monster p1 dan p2 HP nya, pake counter jumlah yg masi idup
+
+            // kalo ada yang jumlahnya 0, berarti game selesai
+
         }
+
+        
+
         scan.close();
     }
 }
