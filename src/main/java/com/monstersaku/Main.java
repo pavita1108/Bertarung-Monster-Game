@@ -168,8 +168,10 @@ public class Main {
         }
         catch (Exception e){
             System.out.println("ERROR");
-        }
-        
+        } 
+
+
+        //START GAME 
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter player 1 name : ");
         String player1name = scan.nextLine();
@@ -178,6 +180,8 @@ public class Main {
         String player2name = scan.nextLine();
         System.out.println("Player 1 name : " + player1name);
         System.out.println("Player 2 name : " + player2name);
+
+        //RANDOM MONSTER
         Random rand = new Random();
         Integer upperbound = listMonster.size();
         ArrayList<Monster> listOfPlayer1Monsters = new ArrayList<Monster>();
@@ -194,12 +198,15 @@ public class Main {
         Player p2 = new Player(player2name, listOfPlayer2Monsters);
         p1.printMonsters();
         p2.printMonsters();
-
         int turn = 0;
         boolean p1Lose = false;
         boolean p2Lose = false;
         Monster p1ActiveMons = p1.getListMonster().get(0);
         Monster p2ActiveMons = p2.getListMonster().get(0);
+
+
+
+        //loop gameplay
         while (!p1Lose && !p2Lose) {
             turn++;
             System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
