@@ -32,6 +32,7 @@ public class Main {
                 int accuracy = Integer.parseInt(line[4]);
                 int priority = Integer.parseInt(line[5]);
                 int ammunition = Integer.parseInt(line[6]);
+                String target = line[7];
                 
                 if (moveType.equals("STATUS")){
                     //baca + masukin data ke objec stats
@@ -46,21 +47,21 @@ public class Main {
                     Double speed = Double.parseDouble(arrofmovestats[5]);
                     Stats stat = new Stats(hp,atk,def,spcAtk,spcDef,speed);
 
-                    StatusMove a = new StatusMove(id, name, elType, accuracy, priority, ammunition, moveStatus, stat);
+                    StatusMove a = new StatusMove(id, name, elType, accuracy, priority, ammunition,target, moveStatus, stat);
 
                     listMoves.add(a);
                 }
                 else if (moveType.equals("NORMAL")){
                     int effect = Integer.parseInt(line[8]);
 
-                    NormalMove b = new NormalMove(id, name, elType, accuracy, priority, ammunition, effect);
+                    NormalMove b = new NormalMove(id, name, elType, accuracy, priority, ammunition,target, effect);
 
                     listMoves.add(b);
                 }
                 else if (moveType.equals("SPECIAL")){
                     int effect = Integer.parseInt(line[8]);
 
-                    SpecialMove c = new SpecialMove(id, name, elType, accuracy, priority, ammunition, effect);
+                    SpecialMove c = new SpecialMove(id, name, elType, accuracy, priority, ammunition, target, effect);
 
                     listMoves.add(c);
                 }

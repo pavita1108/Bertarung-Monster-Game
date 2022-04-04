@@ -1,27 +1,25 @@
 package com.monstersaku.util;
-
-public class Move implements Cloneable{
+import java.util.*;
+public abstract class Move implements Cloneable{
     private int id;
     private String name;
     private ElementType elementType;
     private int accuracy;
     private int priority;
     private int ammunition;
+    private String target;
 
-    public Move (int id,String name, ElementType elementType, int accuracy, int priority, int ammunition) {
+    public Move (int id,String name, ElementType elementType, int accuracy, int priority, int ammunition, String target) {
         this.id = id;
         this.name = name;
         this.elementType = elementType;
         this.accuracy = accuracy;
         this.priority = priority;
         this.ammunition = ammunition;
+        this.target = target;
     }
 
-    public double damage (Monster attacker, Monster target,int basePower) {
-        double damage;
-        damage= (double)Math.floor((basePower * (attacker.getStats().getAttack()/target.getStats().getDefense() + 2 ) * Math.random() ));
-        return damage;
-    }
+    public abstract void applyEffect (Monster attacker, Monster target,HashMap<ElementEffectivityKey,Double> map);
 
     public Object clone() throws CloneNotSupportedException
     {
@@ -76,7 +74,9 @@ public class Move implements Cloneable{
         this.ammunition = ammunition;
     }
 
-
+    public String getTarget() {
+        return this.target;
+    }
 
 
 
