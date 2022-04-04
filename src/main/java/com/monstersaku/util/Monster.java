@@ -14,7 +14,7 @@ public class Monster {
     private boolean isSleep;
     private boolean isParalyze;
     private int sleepCounter;
-    
+    private Double maxHp;
 
     public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
         
@@ -28,6 +28,7 @@ public class Monster {
         this.isSleep = false;
         this.isParalyze = false;
         this.sleepCounter = 0;
+        this.maxHp = baseStats.getHealthPoint();
     }
 
     public String getName(){
@@ -81,6 +82,10 @@ public class Monster {
         return this.sleepCounter;
     }
 
+    public Double getMaxHP() {
+        return this.maxHp;
+    }
+
         // setter status condition 
     public void setIsBurn(boolean status) {
         this.isBurn = status;
@@ -101,6 +106,7 @@ public class Monster {
     public void setSleepCounter(int num) {
         this.sleepCounter = num;
     }
+    
 
         // method untuk cek apakah monster ada condition yang aktif
 
