@@ -1,5 +1,4 @@
 package com.monstersaku.util;
-import java.util.*;
 
 public class StatusMove extends Move{
     private Stats effect;
@@ -27,7 +26,7 @@ public class StatusMove extends Move{
         this.status = status;
     }
 
-    public void applyEffect (Monster attacker, Monster target,HashMap<ElementEffectivityKey,Double> map){
+    public void applyEffect (Monster attacker, Monster target,Effectivity effectivity){
         if (super.getTarget().equals("OWN")){
             Double healthPoint = attacker.getStats().getHealthPoint() + effect.getHealthPoint();
             Double attack = attacker.getStats().getAttack() + effect.getAttack();

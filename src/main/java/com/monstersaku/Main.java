@@ -4,19 +4,18 @@ import java.io.File;
 import java.util.*;
 
 
-
 public class Main {
+    //atribut untuk nyimpen bacaan csv
+    private static ArrayList<Move> listMoves = new ArrayList<>();
+    private static ArrayList<Monster> listMonster = new ArrayList<>();
+    private static Effectivity listEffectivity = new Effectivity();
+
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
             "configs/monsterpool.csv",
             "configs/movepool.csv",
             "configs/element-type-effectivity-chart.csv"));
 
     public static void main(String[] args) {
-        //atribut untuk nyimpen bacaan csv
-        ArrayList<Move> listMoves = new ArrayList<>();
-        ArrayList<Monster> listMonster = new ArrayList<>();
-        HashMap<ElementEffectivityKey,Double> map = new HashMap<>();
-
         //mulai baca csv pake try catch
         try{
             //baca movepool
@@ -115,6 +114,8 @@ public class Main {
                     Move copy = (Move)asli.clone();
                     monsmove.add(copy);
                 }
+                DefaultMove dm = new DefaultMove();
+                monsmove.add(dm);
 
                 //bikin object
                 Monster baru = new Monster(name, eltype, basestats, monsmove);
@@ -163,14 +164,13 @@ public class Main {
                         break; 
                 }
                 ElementEffectivityKey source_target = new ElementEffectivityKey(s,t);
-                map.put(source_target, x);
+                listEffectivity.add(source_target, x);
             }
             
         }
         catch (Exception e){
             System.out.println("ERROR");
         } 
-
 
         System.out.println("WELCOME TO BERTARUNG MOSNTER");
         System.out.println(" ");
@@ -229,8 +229,10 @@ public class Main {
 
 
                 // declare variable loop gameplaye
-                boolean p1PilihanMoveValid;
-                boolean p2PilihanMoveValid;
+                boolean p1PilihanMoveValid = false;
+                boolean p2PilihanMoveValid = false;
+                int p1PilMove = -1;
+                int p2PilMove = -1;
                 boolean p1BisaMove;
                 boolean p2BisaMove;
                 int select1;
@@ -254,16 +256,54 @@ public class Main {
                         kalo udah di angka 0 sleep counternya, ubah monster isSleep nya jadi ke false
 
                     */
+                    for (int i = 0; i < p1.getJumlahMonster(); i++){
+                        if (p1.getListMonster().get(i).getIsSleep()){   
+                            p1.getListMonster().get(i).setSleepCounter(p1.getListMonster().get(i).getSleepCounter()-1);
+                            if (p1.getListMonster().get(i).getSleepCounter() == 0){
+                                p1.getListMonster().get(i).setIsSleep(false);
+                            }
+                        }
+                        
+                    }
+                    for (int i = 0; i < p2.getJumlahMonster(); i++){
+                        if (p2.getListMonster().get(i).getIsSleep()){   
+                            p2.getListMonster().get(i).setSleepCounter(p2.getListMonster().get(i).getSleepCounter()-1);
+                            if (p2.getListMonster().get(i).getSleepCounter() == 0){
+                                p2.getListMonster().get(i).setIsSleep(false);
+                            }
+                        }
+                    }
 
                     /* Ngecek semua monster p1 dan p2 ada yang Burn apa engga,
                         setiap ada yang burn, kurangin HP sesuai ketentuan Burn 
                     
                     */
+                    for (int i = 0; i < p1.getJumlahMonster(); i++){
+                        if (p1.getListMonster().get(i).getIsBurn()){   
+                            StatusCondition.Burn(p1.getListMonster().get(i));
+                        }    
+                    }
+                    for (int i = 0; i < p2.getJumlahMonster(); i++){
+                        if (p2.getListMonster().get(i).getIsBurn()){   
+                            StatusCondition.Burn(p2.getListMonster().get(i));
+                        }  
+                    }
 
                     /* Ngecek semua monster p1 dan p2 ada yang poison apa engga,
                         setiap ada yang poison, kurangin HP sesuai ketentuan poison 
                     
                     */
+                    for (int i = 0; i < p1.getJumlahMonster(); i++){
+                        if (p1.getListMonster().get(i).getIsPoison()){   
+                            StatusCondition.Poison(p1.getListMonster().get(i));
+                        }    
+                    }
+                    for (int i = 0; i < p2.getJumlahMonster(); i++){
+                        if (p2.getListMonster().get(i).getIsPoison()){   
+                            StatusCondition.Poison(p2.getListMonster().get(i));
+                        }  
+                    }
+
 
 
                     // PLAYER 1 nentuin TURN (BELUM EKSEKUSI)
@@ -284,7 +324,10 @@ public class Main {
                             // ngecek paralyzed
                             if (p1ActiveMons.getIsParalyze()) {
                                 // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
-
+                                int rand_int = rand.nextInt(4);
+                                if (rand_int == 0){
+                                    p1BisaMove = false;
+                                }
                             }
                             
                             if (p1BisaMove) {
@@ -296,38 +339,35 @@ public class Main {
                                 // milih move
                                 while (!p1PilihanMoveValid) {
                                     // input pilihan move
+                                    System.out.printf("Pilih Move : ");
+                                    String pilmove = scan.next();
+                                    
 
                                     // ngecek type move
-
-                                    // kalo move nya default
-                                        p1PilihanMoveValid = true;
-                                    // kalo move nya special    
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p1PilihanMoveValid = true;
-
-                                    // kalo move nya normal
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p1PilihanMoveValid = true;
-
-                                    // kalo movenya buff
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p1PilihanMoveValid = true;
-
+                                    for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
+                                        if (p1ActiveMons.getMoves().get(i).getName().equals(pilmove)){
+                                            if (p1ActiveMons.getMoves().get(i).getAmmunition() ==0){
+                                                System.out.println("Amunisi habis.");
+                                            }
+                                            else{
+                                                p1PilMove = i;
+                                                p1PilihanMoveValid = true;
+                                            }
+                                        }
+                                        else{
+                                            System.out.println("Salah pilih");
+                                        }
+                                    }
+                                    if (!p1PilihanMoveValid){
+                                        System.out.println("Silahkan pilih yang lain");
+                                    }
+                                    
                                 }
                             }
                             else {
                                 System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
                             }
                         }
-                        
-                        
-                        
 
                     }
 
@@ -362,7 +402,10 @@ public class Main {
                             // ngecek paralyzed
                             if (p2ActiveMons.getIsParalyze()) {
                                 // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
-
+                                int rand_int = rand.nextInt(4);
+                                if (rand_int == 0){
+                                    p2BisaMove = false;
+                                }
                             }
                             
                             if (p2BisaMove) {
@@ -374,38 +417,35 @@ public class Main {
                                 // milih move
                                 while (!p2PilihanMoveValid) {
                                     // input pilihan move
+                                    System.out.printf("Pilih Move : ");
+                                    String pilmove = scan.next();
+                                    
 
                                     // ngecek type move
-
-                                    // kalo move nya default
-                                        p2PilihanMoveValid = true;
-                                    // kalo move nya special    
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p2PilihanMoveValid = true;
-
-                                    // kalo move nya normal
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p2PilihanMoveValid = true;
-
-                                    // kalo movenya buff
-                                        // ngecek amunisi
-
-                                        // kalo bisa dipake
-                                            p2PilihanMoveValid = true;
-
+                                    for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
+                                        if (p2ActiveMons.getMoves().get(i).getName().equals(pilmove)){
+                                            if (p2ActiveMons.getMoves().get(i).getAmmunition() ==0){
+                                                System.out.println("Amunisi habis.");
+                                            }
+                                            else{
+                                                p2PilMove = i;
+                                                p2PilihanMoveValid = true;
+                                            }
+                                        }
+                                        else{
+                                            System.out.println("Salah pilih");
+                                        }
+                                    }
+                                    if (!p2PilihanMoveValid){
+                                        System.out.println("Silahkan pilih yang lain");
+                                    }
+                                    
                                 }
                             }
                             else {
                                 System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
                             }
-                        }
-                        
-                        
-                        
+                        } 
 
                     }
 

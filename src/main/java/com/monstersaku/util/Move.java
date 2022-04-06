@@ -1,5 +1,4 @@
 package com.monstersaku.util;
-import java.util.*;
 public abstract class Move implements Cloneable{
     private int id;
     private String name;
@@ -19,7 +18,7 @@ public abstract class Move implements Cloneable{
         this.target = target;
     }
 
-    public abstract void applyEffect (Monster attacker, Monster target,HashMap<ElementEffectivityKey,Double> map);
+    public abstract void applyEffect (Monster attacker, Monster target,Effectivity effect);
 
     public Object clone() throws CloneNotSupportedException
     {

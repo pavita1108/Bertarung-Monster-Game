@@ -1,5 +1,4 @@
 package com.monstersaku.util;
-import java.util.*;
 public class SpecialMove extends Move{
     private int basepower;
     public SpecialMove (int id,String name, ElementType elementType, int accuracy, int priority, int ammunition, String target, int basepower){
@@ -11,13 +10,13 @@ public class SpecialMove extends Move{
         return basepower;
     }
 
-    public void applyEffect (Monster attacker, Monster target,HashMap<ElementEffectivityKey,Double> map){
+    public void applyEffect (Monster attacker, Monster target,Effectivity effect){
         //effectivity 
         double effectivity = 1;
         double burn = 1;
         for (int i = 0 ; i < target.getElementTypes().size() ; i++){
             ElementEffectivityKey a = new ElementEffectivityKey(super.getElementType(), target.getElementTypes().get(i));
-            effectivity = effectivity * Effectivity.getEffectivity(a, map);
+            effect.getEffectivity(a);            
         }
         if (attacker.getIsBurn()){
             burn = 0.5;
