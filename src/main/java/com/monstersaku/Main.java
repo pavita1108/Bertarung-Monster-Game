@@ -10,6 +10,36 @@ public class Main {
     private static ArrayList<Monster> listMonster = new ArrayList<>();
     private static Effectivity listEffectivity = new Effectivity();
 
+    public static void applyStatusMove( Monster defMons,int defMonsMove){
+        try{
+            if (!defMons.getIsBurn() && !defMons.getIsPoison() && !defMons.getIsSleep() && !defMons.getIsParalyze()){
+                StatusMove statusMove = (StatusMove) defMons.getMoves().get(defMonsMove);
+                if (statusMove.getStatus().equals("BURN")){
+                    defMons.setIsBurn(true);
+                    StatusCondition.Burn(defMons);
+                }
+                else if (statusMove.getStatus().equals("POISON")){
+                    defMons.setIsPoison(true);
+                    StatusCondition.Poison(defMons);
+                }
+                else if (statusMove.getStatus().equals("SLEEP")){
+                    defMons.setIsSleep(true);
+                    StatusCondition.Sleep(defMons);
+                }
+                else if (statusMove.getStatus().equals("PARALYZE")){
+                    defMons.setIsParalyze(true);
+                    StatusCondition.Paralyze(defMons);
+                }
+                else{
+                    System.out.println("Tidak ada efek status condition");
+                }
+            }
+
+        }
+        catch (Exception e){
+            e.getMessage();
+        }
+    }
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
             "configs/monsterpool.csv",
             "configs/movepool.csv",
@@ -229,12 +259,11 @@ public class Main {
 
 
                 // declare variable loop gameplaye
-                boolean p1PilihanMoveValid = false;
-                boolean p2PilihanMoveValid = false;
+                boolean p1PilihanMoveValid = true;
+                boolean p2PilihanMoveValid = true;
                 int p1PilMove = -1;
                 int p2PilMove = -1;
-                boolean p1BisaMove;
-                boolean p2BisaMove;
+
                 int select1;
                 int select2;
 
@@ -243,8 +272,8 @@ public class Main {
 
                     p1PilihanMoveValid = false;
                     p2PilihanMoveValid = false;
-                    p1BisaMove = false;
-                    p2BisaMove = false;
+                    boolean p1BisaMove = true;
+                    boolean p2BisaMove = true;
 
                     turn++;
                     /* Ngecek semua monster p1 dan p2 status condition sleep
@@ -328,8 +357,8 @@ public class Main {
                                 if (rand_int == 0){
                                     p1BisaMove = false;
                                 }
+                                
                             }
-                            
                             if (p1BisaMove) {
                                 System.out.printf("%s move : %n", p1ActiveMons.getName());
                                 for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
@@ -337,12 +366,11 @@ public class Main {
                                 }
 
                                 // milih move
+                                
                                 while (!p1PilihanMoveValid) {
                                     // input pilihan move
                                     System.out.printf("Pilih Move : ");
-                                    String pilmove = scan.next();
-                                    
-
+                                    String pilmove = scan.nextLine();
                                     // ngecek type move
                                     for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
                                         if (p1ActiveMons.getMoves().get(i).getName().equals(pilmove)){
@@ -352,16 +380,10 @@ public class Main {
                                             else{
                                                 p1PilMove = i;
                                                 p1PilihanMoveValid = true;
+                                                break;
                                             }
                                         }
-                                        else{
-                                            System.out.println("Salah pilih");
-                                        }
                                     }
-                                    if (!p1PilihanMoveValid){
-                                        System.out.println("Silahkan pilih yang lain");
-                                    }
-                                    
                                 }
                             }
                             else {
@@ -415,12 +437,11 @@ public class Main {
                                 }
 
                                 // milih move
+                                
                                 while (!p2PilihanMoveValid) {
                                     // input pilihan move
                                     System.out.printf("Pilih Move : ");
-                                    String pilmove = scan.next();
-                                    
-
+                                    String pilmove = scan.nextLine();
                                     // ngecek type move
                                     for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
                                         if (p2ActiveMons.getMoves().get(i).getName().equals(pilmove)){
@@ -432,14 +453,8 @@ public class Main {
                                                 p2PilihanMoveValid = true;
                                             }
                                         }
-                                        else{
-                                            System.out.println("Salah pilih");
-                                        }
                                     }
-                                    if (!p2PilihanMoveValid){
-                                        System.out.println("Silahkan pilih yang lain");
-                                    }
-                                    
+
                                 }
                             }
                             else {
@@ -458,15 +473,41 @@ public class Main {
                         // bikin reset status buff untuk monster yang diswitch
 
                         // ngerubah aktif monster
-                        p1ActiveMons = p2.getListMonster().get(sel-1);
-                        System.out.printf("Player 1 Active Monster : %s%n", p2ActiveMons.getName());
+                        p2ActiveMons = p2.getListMonster().get(sel-1);
+                        System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
                     }
 
                     // PROSES EKSEKUSI PILIHAN KEDUA PLAYER
 
                     // kalo kedua player ngelakuin move
                     if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == true)) {
+                        System.out.println("a");
                         // ngecek priority mana yang lebih gede
+                        if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() == p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
+
+                        }
+                        else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() > p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
+                            //eksekusi move p1
+                            if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
+                                //
+                                if (!p2ActiveMons.getIsBurn() && !p2ActiveMons.getIsSleep() && !p2ActiveMons.getIsParalyze() && !p2ActiveMons.getIsPoison()){
+                                    
+                                    p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                    Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                                }
+                                else {
+                                    System.out.println("Ga bisa bro ni monster udh ada effect kasian :(");
+                                }
+                            }
+                            else{
+                                p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                
+                            }
+                        }
+                        else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() < p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
+
+                        }
+
 
                         // kalo priority p1 lebih gede
                             // eksekusi move pilihan p1 duluan
