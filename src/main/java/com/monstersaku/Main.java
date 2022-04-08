@@ -527,7 +527,7 @@ public class Main {
                                 p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
                                 Main.applyStatusMove(p2ActiveMons, p1PilMove);
                                 if (!p2ActiveMons.getIsSleep()){
-                                    System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove));
+                                    System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove).getName());
                                     if (p2ActiveMons.getMoves().get(p2PilMove) instanceof StatusMove){
                                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                         Main.applyStatusMove(p1ActiveMons, p2PilMove);
@@ -535,7 +535,8 @@ public class Main {
                                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                         Main.applyStatusMove(p1ActiveMons, p2PilMove);
                                     }
-                                } else if (p2ActiveMons.getIsParalyze()){
+                                } 
+                                else if (p2ActiveMons.getIsParalyze()){
                                     /*Blom dibuat */
                                     System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
                                     System.out.println("Efek 25% akan dirandom...");
@@ -548,7 +549,7 @@ public class Main {
                                 p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                 Main.applyStatusMove(p1ActiveMons, p2PilMove);
                                 if (!p1ActiveMons.getIsSleep()){
-                                    System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove));
+                                    System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove).getName());
                                     if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
                                         p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
                                     } else {
@@ -603,89 +604,6 @@ public class Main {
                             }
                             System.out.println(p1ActiveMons.getName() + " dalam kondisi sleep");
                         }
-                            
-
-
-                        // kalo priority p1 lebih gede
-                            // eksekusi move pilihan p1 duluan
-
-                            // kalo movenya normal
-                                // eksekusi
-
-                            // kalo movenya spesial
-                                // eksekusi
-                            
-                            // kalo movenya default
-                                // eksekusi
-
-                            // kalo movenya buff
-                                // ngecek apa move nya ngaruh ke musuh apa engga
-                                // kalo ngaruh ke musuh
-                                    // cek musuh status conditionnya ada yang aktif apa engga
-
-                                    // kalo ga ada yg aktif
-                                        // kalo bikin sleep musuh
-                                            // eksekusi, jangan lupa kasih counter sleep
-                                        // kalo bikin paralyze musuh
-                                            //eksekusi
-                                        // kalo bikin burn musuh
-                                            // eksekusi
-                                        // kalo bikin poison musuh
-                                            // eksekusi
-                                
-                                // kalo ga ngaruh ke musuh
-                                    // eksekusi
-
-
-                            // kurangin amunisi move p1 yang dipake
-
-                            // ngecek stats condition p2 (barangkali kena gara-gara move p1 yang duluan)
-                            // if (p2ActiveMons.getIsSleep()) {
-                            //     System.out.println("Monster ini baru saja terkena efek sleep dari move p1 sebelumnya");
-                            // }
-                            // else if (p2ActiveMons.getIsParalyze()) {
-                            //     System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
-                            //     System.out.println("Efek 25% akan dirandom...");
-                            //     // ngerandom 25% bisa move apa engga simpen ke p2BisaMove
-
-                            //     if (p2BisaMove) {
-                            //         // eksekusi move pilihan p2 beserta efek buffnya
-
-                            //         // kalo movenya normal
-                            //             // eksekusi
-
-                            //         // kalo movenya spesial
-                            //             // eksekusi
-                            
-                            //         // kalo movenya default
-                            //             // eksekusi
-
-                            //         // kalo movenya buff
-                            //             // ngecek apa move nya ngaruh ke musuh apa engga
-
-                            //             // kalo ngaruh ke musuh
-                            //                 // cek musuh status conditionnya ada yang aktif apa engga
-
-                            //                 // kalo ga ada yg aktif
-                            //                     // kalo bikin sleep musuh
-                            //                         // eksekusi, jangan lupa kasih counter sleep
-                            //                     // kalo bikin paralyze musuh
-                            //                         //eksekusi
-                            //                     // kalo bikin burn musuh
-                            //                         // eksekusi
-                            //                     // kalo bikin poison musuh
-                            //                         // eksekusi
-                                        
-                            //             // kalo ga ngaruh ke musuh
-                            //                 // eksekusi
-
-                            //         // kurangin amunisi move yang dipake
-
-                            //     }
-                            //     else {
-                            //         System.out.println("Monster tidak bisa move karena efek 25% paralyze aktif");
-                            //     }
-                            // }
                             
                     }
                     // kalo p1 doang yang move, p2 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
