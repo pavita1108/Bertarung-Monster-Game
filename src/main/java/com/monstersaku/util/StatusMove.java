@@ -3,11 +3,13 @@ package com.monstersaku.util;
 public class StatusMove extends Move{
     private Stats effect;
     private String status;
+    private double hpeffect;
 
     public StatusMove (int id,String name, ElementType elementType, int accuracy, int priority, int ammunition, String target, String status,Stats effect){
         super(id,name, elementType, accuracy, priority, ammunition, target);
         this.effect = effect;
         this.status = status;
+        hpeffect = effect.getHealthPoint();
     }
 
     public Stats getEffect() {
@@ -27,28 +29,60 @@ public class StatusMove extends Move{
     }
 
     public void applyEffect (Monster attacker, Monster target,Effectivity effectivity){
-        if (super.getTarget().equals("OWN")){
-            Double healthPoint = attacker.getStats().getHealthPoint() + effect.getHealthPoint();
-            Double attack = attacker.getStats().getAttack() + effect.getAttack();
-            Double defense = attacker.getStats().getDefense() + effect.getDefense();
-            Double spesialAttack = attacker.getStats().getSpesialAttack() + effect.getSpesialAttack();
-            Double spesialDefense = attacker.getStats().getSpesialDefense() + effect.getSpesialDefense();
-            Double speed = attacker.getStats().getSpeed() + effect.getSpeed();
-
-            Stats a = new Stats(healthPoint, attack, defense, spesialAttack, spesialDefense, speed);
-            attacker.setStats(a);
-            
+        double randomAccuracy =  1 + (int)(Math.random() * ((100 - 1) + 1));
+        if (randomAccuracy > super.getAccuracy()){
+            System.out.println("Ga kena bos...");
         }
         else{
-            Double healthPoint = target.getStats().getHealthPoint() + effect.getHealthPoint();
-            Double attack = target.getStats().getAttack() + effect.getAttack();
-            Double defense = target.getStats().getDefense() + effect.getDefense();
-            Double spesialAttack = target.getStats().getSpesialAttack() + effect.getSpesialAttack();
-            Double spesialDefense = target.getStats().getSpesialDefense() + effect.getSpesialDefense();
-            Double speed = target.getStats().getSpeed() + effect.getSpeed();
-
-            Stats a = new Stats(healthPoint, attack, defense, spesialAttack, spesialDefense, speed);
-            target.setStats(a);
+            if (super.getTarget().equals("OWN")){
+                Double temp = attacker.getStats().getHealthPoint() + ((this.hpeffect * attacker.getMaxHP())/100);
+                attacker.getStats().setHealtPoint(temp);
+                System.out.println("Heal berhasil menambah HP");
+            }
+            else if (super.getTarget().equals("ENEMY")){
+                Double temp = target.getStats().getHealthPoint() - this.hpeffect;
+                target.getStats().setHealtPoint(temp);
+                if (!target.getIsBurn() && !target.getIsPoison() && !target.getIsSleep() && !target.getIsParalyze()){
+                    if (this.status.equals("BURN")){   
+                        target.setIsBurn(true); 
+                        target.getStats().setHealtPoint(target.getStats().getHealthPoint()-(target.getMaxHP()/8));    
+                        target.getStats().setAttack(target.getStats().getAttack()/2);
+                        target.getStats().setSpesialAttack(target.getStats().getSpesialAttack()/2);             
+                        System.out.println("Terkena Burn");
+                    }
+                    else if (this.status.equals("POISON")){
+                        target.setIsPoison(true);
+                        target.getStats().setHealtPoint(target.getStats().getHealthPoint() - (target.getMaxHP()/16));
+                        System.out.println("Terkena POISON");  
+                    }
+                    else if (this.status.equals("SLEEP")){
+                        target.setIsSleep(true);
+                        int min = 1;
+                        int max = 7;
+                        int random_round = (int)Math.floor(Math.random()*(max-min+1)+min);
+                        target.setSleepCounter(random_round+1);
+                        System.out.println("Terkena Sleep sebanyak" + random_round+1);
+                    }
+                    else if (this.status.equals("PARALYZE")){    
+                        target.getStats().setSpeed(target.getStats().getSpeed()-(target.getStats().getSpeed()/2));
+                        System.out.printf("%s terkena Paralyze, Speed berkurang 1/2.%n", target.getName());
+                        int random_round = (int)Math.floor(Math.random()*(4-1+1)+1);
+                        if (random_round == 1) {
+                            target.setIsParalyze(true);
+                            System.out.printf("Paralyze efektif! %s tidak dapat bergerak 1 giliran!%n", target.getName());
+                        }
+                        else {
+                            target.setIsParalyze(false);
+                            System.out.printf("Paralyze tidak efektif! %s masih bisa bergerak!%n", target.getName());
+                        }
+                    }
+                }
+                else{
+                    System.out.printf("%s sudah memiliki status condition lain!%n", target.getName());
+                }
+            }
         }
+        super.setAmmunition(super.getAmmunition() - 1);
+
     }
 }
