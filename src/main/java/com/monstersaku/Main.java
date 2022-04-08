@@ -236,15 +236,23 @@ public class Main {
                 //RANDOM MONSTER
                 Random rand = new Random();
                 Integer upperbound = listMonster.size();
+                List<Integer> tempInt = new ArrayList<Integer>();
                 ArrayList<Monster> listOfPlayer1Monsters = new ArrayList<Monster>();
-                for(int i = 0; i < 6; i++){
+                while (listOfPlayer1Monsters.size() != 6) {
                     Integer randommonster = rand.nextInt(upperbound);
-                    listOfPlayer1Monsters.add(listMonster.get(randommonster));
+                    if (!tempInt.contains(randommonster)) {
+                        tempInt.add(randommonster);
+                        listOfPlayer1Monsters.add(listMonster.get(randommonster));
+                    }
                 }
                 ArrayList<Monster> listOfPlayer2Monsters = new ArrayList<Monster>();
-                for(int i = 0; i < 6; i++){
+                tempInt.clear();
+                while (listOfPlayer2Monsters.size() != 6) {
                     Integer randommonster = rand.nextInt(upperbound);
-                    listOfPlayer2Monsters.add(listMonster.get(randommonster));
+                    if (!tempInt.contains(randommonster)) {
+                        tempInt.add(randommonster);
+                        listOfPlayer2Monsters.add(listMonster.get(randommonster));
+                    }
                 }
                 Player p1 = new Player(player1name, listOfPlayer1Monsters);
                 Player p2 = new Player(player2name, listOfPlayer2Monsters);
@@ -279,11 +287,8 @@ public class Main {
                     /* Ngecek semua monster p1 dan p2 status condition sleep
                         setiap ada monster yang condition sleep
                         kurangin atribut sleepCounternya
-
                         caranya monster.setSleepCounter(monster.getSleepCounter() - 1);
-
                         kalo udah di angka 0 sleep counternya, ubah monster isSleep nya jadi ke false
-
                     */
                     for (int i = 0; i < p1.getJumlahMonster(); i++){
                         if (p1.getListMonster().get(i).getIsSleep()){   
@@ -336,146 +341,177 @@ public class Main {
 
 
                     // PLAYER 1 nentuin TURN (BELUM EKSEKUSI)
-                    System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
-                    System.out.println("Select action : ");
-                    System.out.println("1. Move!!!");
-                    System.out.println("2. Switch!!!");
-                    select1 = scan.nextInt();
-
-                    // move
-                    if(select1 == 1){
-                        // ngecek aktive monster sleep atau paralyzed apa engga
-                        if (p1ActiveMons.getIsSleep()) {
-                            // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
-                            System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
-                        }
-                        else {
-                            // ngecek paralyzed
-                            if (p1ActiveMons.getIsParalyze()) {
-                                // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
-                                int rand_int = rand.nextInt(4);
-                                if (rand_int == 0){
-                                    p1BisaMove = false;
-                                }
-                                
+                    boolean turnFinished = false;
+                    while(!turnFinished){
+                        System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                        System.out.println("Select action : ");
+                        System.out.println("1. Move!!!");
+                        System.out.println("2. Switch!!!");
+                        System.out.println("3. View Current Monster's Status");
+                        select1 = scan.nextInt();
+                        // move
+                        if(select1 == 1){
+                            // ngecek aktive monster sleep atau paralyzed apa engga
+                            if (p1ActiveMons.getIsSleep()) {
+                                // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
+                                System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
                             }
-                            if (p1BisaMove) {
-                                System.out.printf("%s move : %n", p1ActiveMons.getName());
-                                for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
-                                    System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+                            else {
+                                // ngecek paralyzed
+                                if (p1ActiveMons.getIsParalyze()) {
+                                    // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
+                                    int rand_int = rand.nextInt(4);
+                                    if (rand_int == 0){
+                                        p1BisaMove = false;
+                                    }
+                                    
                                 }
-
-                                // milih move
-                                
-                                while (!p1PilihanMoveValid) {
-                                    // input pilihan move
-                                    System.out.printf("Pilih Move : ");
-                                    String pilmove = scan.nextLine();
-                                    // ngecek type move
+                                if (p1BisaMove) {
+                                    System.out.printf("%s move : %n", p1ActiveMons.getName());
                                     for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
-                                        if (p1ActiveMons.getMoves().get(i).getName().equals(pilmove)){
-                                            if (p1ActiveMons.getMoves().get(i).getAmmunition() ==0){
-                                                System.out.println("Amunisi habis.");
-                                            }
-                                            else{
-                                                p1PilMove = i;
-                                                p1PilihanMoveValid = true;
-                                                break;
+                                        System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+                                    }
+
+                                    // milih move
+                                    
+                                    while (!p1PilihanMoveValid) {
+                                        // input pilihan move
+                                        System.out.printf("Pilih Move : ");
+                                        String pilmove = scan.nextLine();
+                                        // ngecek type move
+                                        for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
+                                            if (p1ActiveMons.getMoves().get(i).getName().equals(pilmove)){
+                                                if (p1ActiveMons.getMoves().get(i).getAmmunition() ==0){
+                                                    System.out.println("Amunisi habis.");
+                                                }
+                                                else{
+                                                    p1PilMove = i;
+                                                    p1PilihanMoveValid = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                else {
+                                    System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
+                                }
                             }
-                            else {
-                                System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
-                            }
+                            turnFinished = true;
                         }
 
+                        // switch pokemon
+                        else if (select1 == 2){
+                            p1.printMonsters();
+                            System.out.println("Choose Id Monster : ");
+                            int sel = scan.nextInt();
+                            
+                            // bikin reset status buff untuk monster yang diswitch
+
+                            // ngerubah aktif monster
+                            p1ActiveMons = p1.getListMonster().get(sel-1);
+                            System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                            turnFinished = true;
+                        }
+                        //view current monster status
+                        else if (select1 == 3){
+                            System.out.println(p2ActiveMons.getName() + "'s " + "Current Stats");
+                            System.out.println("Health Point: " + p1ActiveMons.getStats().getHealthPoint());
+                            System.out.println("Attack: " + p1ActiveMons.getStats().getAttack());
+                            System.out.println("Defense: " + p1ActiveMons.getStats().getDefense());
+                            System.out.println("Special Attack: " + p1ActiveMons.getStats().getSpesialAttack());
+                            System.out.println("Special Defense: " + p1ActiveMons.getStats().getSpesialDefense());
+                            System.out.println("Speed: " + p1ActiveMons.getStats().getSpeed());
+                        }
                     }
 
-                    // switch pokemon
-                    else if (select1 == 2){
-                        p1.printMonsters();
-                        System.out.println("Choose Id Monster : ");
-                        int sel = scan.nextInt();
-                        
-                        // bikin reset status buff untuk monster yang diswitch
-
-                        // ngerubah aktif monster
-                        p1ActiveMons = p1.getListMonster().get(sel-1);
-                        System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
-                    }
+                    
 
                     // PLAYER 2 nentuin TURN (BELUM EKSEKUSI)
-                    System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
-                    System.out.println("Select action : ");
-                    System.out.println("1. Move!!!");
-                    System.out.println("2. Switch!!!");
-                    select2 = scan.nextInt();
-
-                    // move
-                    if(select2 == 1){
-                        // ngecek aktive monster sleep atau paralyzed apa engga
-                        if (p2ActiveMons.getIsSleep()) {
-                            // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
-                            System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
-                        }
-                        else {
-                            // ngecek paralyzed
-                            if (p2ActiveMons.getIsParalyze()) {
-                                // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
-                                int rand_int = rand.nextInt(4);
-                                if (rand_int == 0){
-                                    p2BisaMove = false;
-                                }
-                            }
-                            
-                            if (p2BisaMove) {
-                                System.out.printf("%s move : %n", p2ActiveMons.getName());
-                                for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
-                                    System.out.printf("%s%n", p2ActiveMons.getMoves().get(i).getName());
-                                }
-
-                                // milih move
-                                
-                                while (!p2PilihanMoveValid) {
-                                    // input pilihan move
-                                    System.out.printf("Pilih Move : ");
-                                    String pilmove = scan.nextLine();
-                                    // ngecek type move
-                                    for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
-                                        if (p2ActiveMons.getMoves().get(i).getName().equals(pilmove)){
-                                            if (p2ActiveMons.getMoves().get(i).getAmmunition() ==0){
-                                                System.out.println("Amunisi habis.");
-                                            }
-                                            else{
-                                                p2PilMove = i;
-                                                p2PilihanMoveValid = true;
-                                            }
-                                        }
-                                    }
-
-                                }
+                    turnFinished = false;
+                    while (!turnFinished){
+                        System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
+                        System.out.println("Select action : ");
+                        System.out.println("1. Move!!!");
+                        System.out.println("2. Switch!!!");
+                        System.out.println("3. View Current Monster's Status");
+                        select2 = scan.nextInt();
+                        // move
+                        if(select2 == 1){
+                            // ngecek aktive monster sleep atau paralyzed apa engga
+                            if (p2ActiveMons.getIsSleep()) {
+                                // ga terjadi apa apa tapi tetep dihitung melakukan turn (asumsi)
+                                System.out.println("Monster yang aktif sedang sleep, tidak bisa melakukan move, sekarang giliran Player lain turn");
                             }
                             else {
-                                System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
-                            }
-                        } 
+                                // ngecek paralyzed
+                                if (p2ActiveMons.getIsParalyze()) {
+                                    // ngerandom 25% bisa move apa engga, nilai true falsenya masukin ke variable p1BisaMove
+                                    int rand_int = rand.nextInt(4);
+                                    if (rand_int == 0){
+                                        p2BisaMove = false;
+                                    }
+                                }
+                                
+                                if (p2BisaMove) {
+                                    System.out.printf("%s move : %n", p2ActiveMons.getName());
+                                    for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
+                                        System.out.printf("%s%n", p2ActiveMons.getMoves().get(i).getName());
+                                    }
 
+                                    // milih move
+                                    
+                                    while (!p2PilihanMoveValid) {
+                                        // input pilihan move
+                                        System.out.printf("Pilih Move : ");
+                                        String pilmove = scan.nextLine();
+                                        // ngecek type move
+                                        for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
+                                            if (p2ActiveMons.getMoves().get(i).getName().equals(pilmove)){
+                                                if (p2ActiveMons.getMoves().get(i).getAmmunition() ==0){
+                                                    System.out.println("Amunisi habis.");
+                                                }
+                                                else{
+                                                    p2PilMove = i;
+                                                    p2PilihanMoveValid = true;
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                                else {
+                                    System.out.println("Anda tidak bisa move karena efek 25% paralyze aktif");
+                                }
+                            } 
+                            turnFinished=true;
+                        }
+
+                        // switch pokemon
+                        else if (select2 == 2){
+                            p2.printMonsters();
+                            System.out.println("Choose Id Monster : ");
+                            int sel = scan.nextInt();
+
+                            // bikin reset status buff untuk monster yang diswitch
+
+                            // ngerubah aktif monster
+                            p2ActiveMons = p2.getListMonster().get(sel-1);
+                            System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
+                            turnFinished = true;
+                        }
+                        else if(select2 == 3){
+                            System.out.println(p2ActiveMons.getName() + "'s " + "Current Stats");
+                            System.out.println("Health Point: " + p2ActiveMons.getStats().getHealthPoint());
+                            System.out.println("Attack: " + p2ActiveMons.getStats().getAttack());
+                            System.out.println("Defense: " + p2ActiveMons.getStats().getDefense());
+                            System.out.println("Special Attack: " + p2ActiveMons.getStats().getSpesialAttack());
+                            System.out.println("Special Defense: " + p2ActiveMons.getStats().getSpesialDefense());
+                            System.out.println("Speed: " + p2ActiveMons.getStats().getSpeed());
+                        }
                     }
 
-                    // switch pokemon
-                    else if (select2 == 2){
-                        p2.printMonsters();
-                        System.out.println("Choose Id Monster : ");
-                        int sel = scan.nextInt();
-
-                        // bikin reset status buff untuk monster yang diswitch
-
-                        // ngerubah aktif monster
-                        p2ActiveMons = p2.getListMonster().get(sel-1);
-                        System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
-                    }
+                    
 
                     // PROSES EKSEKUSI PILIHAN KEDUA PLAYER
 
@@ -484,29 +520,90 @@ public class Main {
                         System.out.println("a");
                         // ngecek priority mana yang lebih gede
                         if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() == p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
+                            System.out.println("AAAAAAAAAAAAAAAAAAAA");
+                            /* Speed P1 >= Speed P2  */
+                            if (p1ActiveMons.getStats().getSpeed() >= p2ActiveMons.getStats().getSpeed()){
+                                System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang duluan");
+                                p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                                if (!p2ActiveMons.getIsSleep()){
+                                    System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove));
+                                    if (p2ActiveMons.getMoves().get(p2PilMove) instanceof StatusMove){
+                                        p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                                    } else {
+                                        p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                                    }
+                                } else if (p2ActiveMons.getIsParalyze()){
+                                    /*Blom dibuat */
+                                    System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                                    System.out.println("Efek 25% akan dirandom...");
+                                }
+                                System.out.println(p2ActiveMons.getName() + " dalam kondisi sleep");
+                            }
+                            /* Speed P1 < Speed P2  */
+                            else if(p1ActiveMons.getStats().getSpeed() < p2ActiveMons.getStats().getSpeed()){
+                                System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang duluan");
+                                p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                                if (!p1ActiveMons.getIsSleep()){
+                                    System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove));
+                                    if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
+                                        p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                    } else {
+                                        p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                    }
+                                    Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                                } else if (p1ActiveMons.getIsParalyze()){
+                                    System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                                    System.out.println("Efek 25% akan dirandom...");
+                                    /*Blom dibuat */
+                                }
+                                System.out.println(p1ActiveMons.getName() + " dalam kondisi sleep");
+                            }
 
                         }
                         else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() > p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
-                            //eksekusi move p1
-                            if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
-                                //
-                                if (!p2ActiveMons.getIsBurn() && !p2ActiveMons.getIsSleep() && !p2ActiveMons.getIsParalyze() && !p2ActiveMons.getIsPoison()){
-                                    
-                                    p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                                    Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                            System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang duluan");
+                            p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                            Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                            if (!p2ActiveMons.getIsSleep()){
+                                System.out.println(p2ActiveMons.getName() + " menyerang milik Player 2 balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove));
+                                if (p2ActiveMons.getMoves().get(p2PilMove) instanceof StatusMove){
+                                    p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                } else {
+                                    p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                 }
-                                else {
-                                    System.out.println("Ga bisa bro ni monster udh ada effect kasian :(");
-                                }
+                                Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                            } else if (p2ActiveMons.getIsParalyze()){
+                                System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                                System.out.println("Efek 25% akan dirandom...");
+                                /*Blom dibuat */
                             }
-                            else{
-                                p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                                
-                            }
+                            System.out.println(p2ActiveMons.getName() + " dalam kondisi sleep");
                         }
+                        
                         else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() < p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
-
+                            System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang duluan");
+                            p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                            Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                            if (!p1ActiveMons.getIsSleep()){
+                                System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove));
+                                if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
+                                    p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                } else {
+                                    p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                }
+                                Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                            } else if (p1ActiveMons.getIsParalyze()){
+                                System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                                System.out.println("Efek 25% akan dirandom...");
+                                /*Blom dibuat */
+                            }
+                            System.out.println(p1ActiveMons.getName() + " dalam kondisi sleep");
                         }
+                            
 
 
                         // kalo priority p1 lebih gede
@@ -543,56 +640,60 @@ public class Main {
                             // kurangin amunisi move p1 yang dipake
 
                             // ngecek stats condition p2 (barangkali kena gara-gara move p1 yang duluan)
-                            if (p2ActiveMons.getIsSleep()) {
-                                System.out.println("Monster ini baru saja terkena efek sleep dari move p1 sebelumnya");
-                            }
-                            else if (p2ActiveMons.getIsParalyze()) {
-                                System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
-                                System.out.println("Efek 25% akan dirandom...");
-                                // ngerandom 25% bisa move apa engga simpen ke p2BisaMove
+                            // if (p2ActiveMons.getIsSleep()) {
+                            //     System.out.println("Monster ini baru saja terkena efek sleep dari move p1 sebelumnya");
+                            // }
+                            // else if (p2ActiveMons.getIsParalyze()) {
+                            //     System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
+                            //     System.out.println("Efek 25% akan dirandom...");
+                            //     // ngerandom 25% bisa move apa engga simpen ke p2BisaMove
 
-                                if (p2BisaMove) {
-                                    // eksekusi move pilihan p2 beserta efek buffnya
+                            //     if (p2BisaMove) {
+                            //         // eksekusi move pilihan p2 beserta efek buffnya
 
-                                    // kalo movenya normal
-                                        // eksekusi
+                            //         // kalo movenya normal
+                            //             // eksekusi
 
-                                    // kalo movenya spesial
-                                        // eksekusi
+                            //         // kalo movenya spesial
+                            //             // eksekusi
                             
-                                    // kalo movenya default
-                                        // eksekusi
+                            //         // kalo movenya default
+                            //             // eksekusi
 
-                                    // kalo movenya buff
-                                        // ngecek apa move nya ngaruh ke musuh apa engga
+                            //         // kalo movenya buff
+                            //             // ngecek apa move nya ngaruh ke musuh apa engga
 
-                                        // kalo ngaruh ke musuh
-                                            // cek musuh status conditionnya ada yang aktif apa engga
+                            //             // kalo ngaruh ke musuh
+                            //                 // cek musuh status conditionnya ada yang aktif apa engga
 
-                                            // kalo ga ada yg aktif
-                                                // kalo bikin sleep musuh
-                                                    // eksekusi, jangan lupa kasih counter sleep
-                                                // kalo bikin paralyze musuh
-                                                    //eksekusi
-                                                // kalo bikin burn musuh
-                                                    // eksekusi
-                                                // kalo bikin poison musuh
-                                                    // eksekusi
+                            //                 // kalo ga ada yg aktif
+                            //                     // kalo bikin sleep musuh
+                            //                         // eksekusi, jangan lupa kasih counter sleep
+                            //                     // kalo bikin paralyze musuh
+                            //                         //eksekusi
+                            //                     // kalo bikin burn musuh
+                            //                         // eksekusi
+                            //                     // kalo bikin poison musuh
+                            //                         // eksekusi
                                         
-                                        // kalo ga ngaruh ke musuh
-                                            // eksekusi
+                            //             // kalo ga ngaruh ke musuh
+                            //                 // eksekusi
 
-                                    // kurangin amunisi move yang dipake
+                            //         // kurangin amunisi move yang dipake
 
-                                }
-                                else {
-                                    System.out.println("Monster tidak bisa move karena efek 25% paralyze aktif");
-                                }
-                            }
+                            //     }
+                            //     else {
+                            //         System.out.println("Monster tidak bisa move karena efek 25% paralyze aktif");
+                            //     }
+                            // }
                             
                     }
                     // kalo p1 doang yang move, p2 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
                     else if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == false)) {
+                        System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang menggunakan " + p1ActiveMons.getMoves().get(p1PilMove));
+                        p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                        Main.applyStatusMove(p2ActiveMons, p1PilMove);
+                        System.out.println(p2ActiveMons.getName() + " terkena serangan " + p1ActiveMons.getMoves().get(p1PilMove));
                         // yaudah tinggal eksekusi move p1
                         
                         // kalo movenya normal
@@ -627,6 +728,10 @@ public class Main {
 
                     // kalo p2 doang yang move, p1 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
                     else if ((p2PilihanMoveValid == true) && (p1PilihanMoveValid == false)) {
+                        System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang menggunakan " + p2ActiveMons.getMoves().get(p2PilMove));
+                        p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
+                        System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove));
                         // yaudah tinggal eksekusi move p2
                         
                         // kalo movenya normal
