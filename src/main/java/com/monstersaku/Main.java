@@ -10,36 +10,6 @@ public class Main {
     private static ArrayList<Monster> listMonster = new ArrayList<>();
     private static Effectivity listEffectivity = new Effectivity();
 
-    public static void applyStatusMove( Monster defMons,int defMonsMove){
-        try{
-            if (!defMons.getIsBurn() && !defMons.getIsPoison() && !defMons.getIsSleep() && !defMons.getIsParalyze()){
-                StatusMove statusMove = (StatusMove) defMons.getMoves().get(defMonsMove);
-                if (statusMove.getStatus().equals("BURN")){
-                    defMons.setIsBurn(true);
-                    StatusCondition.Burn(defMons);
-                }
-                else if (statusMove.getStatus().equals("POISON")){
-                    defMons.setIsPoison(true);
-                    StatusCondition.Poison(defMons);
-                }
-                else if (statusMove.getStatus().equals("SLEEP")){
-                    defMons.setIsSleep(true);
-                    StatusCondition.Sleep(defMons);
-                }
-                else if (statusMove.getStatus().equals("PARALYZE")){
-                    defMons.setIsParalyze(true);
-                    StatusCondition.Paralyze(defMons);
-                }
-                else{
-                    System.out.println("Tidak ada efek status condition");
-                }
-            }
-
-        }
-        catch (Exception e){
-            e.getMessage();
-        }
-    }
     private static final List<String> CSV_FILE_PATHS = Collections.unmodifiableList(Arrays.asList(
             "configs/monsterpool.csv",
             "configs/movepool.csv",
@@ -236,23 +206,27 @@ public class Main {
                 //RANDOM MONSTER
                 Random rand = new Random();
                 Integer upperbound = listMonster.size();
-                List<Integer> tempInt = new ArrayList<Integer>();
                 ArrayList<Monster> listOfPlayer1Monsters = new ArrayList<Monster>();
-                while (listOfPlayer1Monsters.size() != 6) {
+                for(int i = 0; i < 6; i++){
                     Integer randommonster = rand.nextInt(upperbound);
-                    if (!tempInt.contains(randommonster)) {
-                        tempInt.add(randommonster);
-                        listOfPlayer1Monsters.add(listMonster.get(randommonster));
-                    }
+                    Monster originMonster1 = listMonster.get(randommonster);
+                    while (listOfPlayer1Monsters.contains(originMonster1)){
+                        randommonster = rand.nextInt(upperbound);
+                        originMonster1 = listMonster.get(randommonster);
+                    }    
+                        //Monster copyMonster = (Monster)originMonster.clone();
+                    listOfPlayer1Monsters.add(originMonster1);
                 }
                 ArrayList<Monster> listOfPlayer2Monsters = new ArrayList<Monster>();
-                tempInt.clear();
-                while (listOfPlayer2Monsters.size() != 6) {
+                for(int i = 0; i < 6; i++){
                     Integer randommonster = rand.nextInt(upperbound);
-                    if (!tempInt.contains(randommonster)) {
-                        tempInt.add(randommonster);
-                        listOfPlayer2Monsters.add(listMonster.get(randommonster));
-                    }
+                    Monster originMonster2 = listMonster.get(randommonster);
+                    while ((listOfPlayer1Monsters.contains(originMonster2)) || (listOfPlayer2Monsters.contains(originMonster2))){
+                        randommonster = rand.nextInt(upperbound);
+                        originMonster2 = listMonster.get(randommonster);
+                    }  
+                        //Monster copyMonster = (Monster)originMonster.clone();
+                    listOfPlayer2Monsters.add(originMonster2);
                 }
                 Player p1 = new Player(player1name, listOfPlayer1Monsters);
                 Player p2 = new Player(player2name, listOfPlayer2Monsters);
@@ -525,15 +499,12 @@ public class Main {
                             if (p1ActiveMons.getStats().getSpeed() >= p2ActiveMons.getStats().getSpeed()){
                                 System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang duluan");
                                 p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                                Main.applyStatusMove(p2ActiveMons, p1PilMove);
                                 if (!p2ActiveMons.getIsSleep()){
                                     System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove).getName());
                                     if (p2ActiveMons.getMoves().get(p2PilMove) instanceof StatusMove){
                                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
                                     } else {
                                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
                                     }
                                 } 
                                 else if (p2ActiveMons.getIsParalyze()){
@@ -547,7 +518,6 @@ public class Main {
                             else if(p1ActiveMons.getStats().getSpeed() < p2ActiveMons.getStats().getSpeed()){
                                 System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang duluan");
                                 p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                                Main.applyStatusMove(p1ActiveMons, p2PilMove);
                                 if (!p1ActiveMons.getIsSleep()){
                                     System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove).getName());
                                     if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
@@ -555,7 +525,6 @@ public class Main {
                                     } else {
                                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                     }
-                                    Main.applyStatusMove(p2ActiveMons, p1PilMove);
                                 } else if (p1ActiveMons.getIsParalyze()){
                                     System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
                                     System.out.println("Efek 25% akan dirandom...");
@@ -568,7 +537,6 @@ public class Main {
                         else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() > p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
                             System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang duluan");
                             p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                            Main.applyStatusMove(p2ActiveMons, p1PilMove);
                             if (!p2ActiveMons.getIsSleep()){
                                 System.out.println(p2ActiveMons.getName() + " menyerang milik Player 2 balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove));
                                 if (p2ActiveMons.getMoves().get(p2PilMove) instanceof StatusMove){
@@ -576,7 +544,6 @@ public class Main {
                                 } else {
                                     p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                 }
-                                Main.applyStatusMove(p1ActiveMons, p2PilMove);
                             } else if (p2ActiveMons.getIsParalyze()){
                                 System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
                                 System.out.println("Efek 25% akan dirandom...");
@@ -588,7 +555,6 @@ public class Main {
                         else if (p1ActiveMons.getMoves().get(p1PilMove).getPriority() < p2ActiveMons.getMoves().get(p2PilMove).getPriority()){
                             System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang duluan");
                             p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                            Main.applyStatusMove(p1ActiveMons, p2PilMove);
                             if (!p1ActiveMons.getIsSleep()){
                                 System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove));
                                 if (p1ActiveMons.getMoves().get(p1PilMove) instanceof StatusMove){
@@ -596,7 +562,6 @@ public class Main {
                                 } else {
                                     p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                                 }
-                                Main.applyStatusMove(p2ActiveMons, p1PilMove);
                             } else if (p1ActiveMons.getIsParalyze()){
                                 System.out.println("Monster ini baru saha terkena efek paralyze dari move p1 sebelumnya");
                                 System.out.println("Efek 25% akan dirandom...");
@@ -610,80 +575,17 @@ public class Main {
                     else if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == false)) {
                         System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang menggunakan " + p1ActiveMons.getMoves().get(p1PilMove));
                         p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                        Main.applyStatusMove(p2ActiveMons, p1PilMove);
                         System.out.println(p2ActiveMons.getName() + " terkena serangan " + p1ActiveMons.getMoves().get(p1PilMove));
-                        // yaudah tinggal eksekusi move p1
-                        
-                        // kalo movenya normal
-                            // eksekusi
 
-                        // kalo movenya spesial
-                            // eksekusi
-                        
-                        // kalo movenya default
-                            // eksekusi
-
-                        // kalo movenya buff
-                            // ngecek apa move nya ngaruh ke musuh apa engga
-                            // kalo ngaruh ke musuh
-                                // cek musuh status conditionnya ada yang aktif apa engga
-
-                                // kalo ga ada yg aktif
-                                    // kalo bikin sleep musuh
-                                        // eksekusi, jangan lupa kasih counter sleep
-                                    // kalo bikin paralyze musuh
-                                        //eksekusi
-                                    // kalo bikin burn musuh
-                                        // eksekusi
-                                    // kalo bikin poison musuh
-                                        // eksekusi
-                            
-                            // kalo ga ngaruh ke musuh
-                                // eksekusi
-
-                        // kurangin amunisi move p1 yang dipilih
                     }
 
                     // kalo p2 doang yang move, p1 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
                     else if ((p2PilihanMoveValid == true) && (p1PilihanMoveValid == false)) {
                         System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang menggunakan " + p2ActiveMons.getMoves().get(p2PilMove));
                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                        Main.applyStatusMove(p1ActiveMons, p2PilMove);
                         System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove));
-                        // yaudah tinggal eksekusi move p2
                         
-                        // kalo movenya normal
-                            // eksekusi
-
-                        // kalo movenya spesial
-                            // eksekusi
-                        
-                        // kalo movenya default
-                            // eksekusi
-
-                        // kalo movenya buff
-                            // ngecek apa move nya ngaruh ke musuh apa engga
-                            // kalo ngaruh ke musuh
-                                // cek musuh status conditionnya ada yang aktif apa engga
-
-                                // kalo ga ada yg aktif
-                                    // kalo bikin sleep musuh
-                                        // eksekusi, jangan lupa kasih counter sleep
-                                    // kalo bikin paralyze musuh
-                                        //eksekusi
-                                    // kalo bikin burn musuh
-                                        // eksekusi
-                                    // kalo bikin poison musuh
-                                        // eksekusi
-                            
-                            // kalo ga ngaruh ke musuh
-                                // eksekusi
-
-                        // kurangin amunisi move p2 yang dipilih
                     }
-
-                    // kondisi else ga terjadi apa apa jadi gausha ditulis (karena ga ada yang move)
-
 
                     // ----------- NGECEK UDAH ADA YANG WIN APA BELUM --------------
 
@@ -692,9 +594,6 @@ public class Main {
                     // kalo ada yang jumlahnya 0, berarti game selesai
 
                 }
-
-                
-
                 scan.close();
             }
              else if (menu == 2){

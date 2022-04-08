@@ -9,3 +9,5 @@ id;name;elementTypes;baseStats;moves
 8;Thwackey;GRASS;70,85,70,55,60,80;1,5
 9;Growlithe;FIRE,GRASS;55,70,45,70,50,60;1,2,3
 10;Kingler;WATER;55,130,115,50,50,75;1,2
+11;Pikachu;FIRE;100,70,45,70,50,60;1,2,3
+12;Abra;WATER;30,130,115,50,50,75;1,2
