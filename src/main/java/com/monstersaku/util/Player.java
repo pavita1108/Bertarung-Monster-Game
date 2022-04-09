@@ -35,6 +35,14 @@ public class Player {
     public void setJumlahMonster(int jumlahMonster) {
         this.jumlahMonster = jumlahMonster;
     }
+    public boolean isLose(){
+        return (listMonster.get(0).getStats().getHealthPoint()<=0 && 
+        listMonster.get(1).getStats().getHealthPoint()<=0 && 
+        listMonster.get(2).getStats().getHealthPoint()<=0 && 
+        listMonster.get(3).getStats().getHealthPoint()<=0 && 
+        listMonster.get(4).getStats().getHealthPoint()<=0 && 
+        listMonster.get(5).getStats().getHealthPoint()<=0);
+    }
 
     public void printMonsters(){
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -60,7 +68,7 @@ public class Player {
                     System.out.printf("Element Type : %s%n", ElementType.GRASS);
                 } 
             }
-            System.out.printf("Stats %s : %n", monster.getName());
+            monster.printStats();
         }
     }
 

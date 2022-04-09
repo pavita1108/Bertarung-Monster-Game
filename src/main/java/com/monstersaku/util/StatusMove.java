@@ -66,15 +66,10 @@ public class StatusMove extends Move{
                     else if (this.status.equals("PARALYZE")){    
                         target.getStats().setSpeed(target.getStats().getSpeed()-(target.getStats().getSpeed()/2));
                         System.out.printf("%s terkena Paralyze, Speed berkurang 1/2.%n", target.getName());
-                        int random_round = (int)Math.floor(Math.random()*(4-1+1)+1);
-                        if (random_round == 1) {
-                            target.setIsParalyze(true);
-                            System.out.printf("Paralyze efektif! %s tidak dapat bergerak 1 giliran!%n", target.getName());
-                        }
-                        else {
-                            target.setIsParalyze(false);
-                            System.out.printf("Paralyze tidak efektif! %s masih bisa bergerak!%n", target.getName());
-                        }
+
+                        target.setIsParalyze(true);
+                        System.out.printf("Paralyze efektif!");
+
                     }
                 }
                 else{

@@ -7,6 +7,7 @@ public class Stats {
     private double spesialAttack;
     private double spesialDefense;
     private double speed;
+    
 
     // constructor
     public Stats (double healthPoint, double attack, double defense, double spesialAttack, double spesialDefense, double speed) {

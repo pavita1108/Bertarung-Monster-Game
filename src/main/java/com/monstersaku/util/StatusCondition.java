@@ -21,7 +21,6 @@ public class StatusCondition {
     }
 
     public static void Sleep (Monster mons){
-        mons.setIsSleep(true);
         Random rand = new Random();
         int rand_int = rand.nextInt(7) + 1;
         mons.setSleepCounter(rand_int);

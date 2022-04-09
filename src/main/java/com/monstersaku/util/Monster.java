@@ -15,6 +15,7 @@ public class Monster {
     private boolean isParalyze;
     private int sleepCounter;
     private Double maxHp;
+    private boolean isDead;
 
     public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
         
@@ -28,6 +29,7 @@ public class Monster {
         this.isSleep = false;
         this.isParalyze = false;
         this.sleepCounter = 0;
+        this.isDead = false;
         this.maxHp = baseStats.getHealthPoint();
     }
 
@@ -85,6 +87,12 @@ public class Monster {
     public Double getMaxHP() {
         return this.maxHp;
     }
+    public boolean getIsDead(){
+        if (baseStats.getHealthPoint() <= 0){
+            isDead = true;  
+        }
+        return isDead;
+    }
 
         // setter status condition 
     public void setIsBurn(boolean status) {
@@ -107,7 +115,6 @@ public class Monster {
         this.sleepCounter = num;
     }
     
-
         // method untuk cek apakah monster ada condition yang aktif
 
     public boolean isAnyConditionActive() {
@@ -117,5 +124,22 @@ public class Monster {
         else {
             return false;
         }
+    }
+
+    public void printStats (){
+        if (isDead){
+            System.out.println(name + "sudah mati");
+        }
+        else{
+            System.out.println(name + "'s " + "Current Stats");
+            System.out.println("Health Point: " + baseStats.getHealthPoint());
+            System.out.println("Attack: " + baseStats.getAttack());
+            System.out.println("Defense: " + baseStats.getDefense());
+            System.out.println("Special Attack: " + baseStats.getSpesialAttack());
+            System.out.println("Special Defense: " + baseStats.getSpesialDefense());
+            System.out.println("Speed: " + baseStats.getSpeed());
+            System.out.println("");
+        }
+        
     }
 }
