@@ -118,7 +118,7 @@ public class Main {
                 monsmove.add(dm);
 
                 //bikin object
-                Monster baru = new Monster(name, eltype, basestats, monsmove);
+                Monster baru = new Monster(id,name, eltype, basestats, monsmove);
                 listMonster.add(baru);  
                 
             }   
@@ -178,9 +178,7 @@ public class Main {
         System.out.println("==============================");
         System.out.println("1. START GAME");
         System.out.println("2. HELP");
-        System.out.println("3. VIEW MONSTER INFO");
-        System.out.println("4. VIEW GAME INFO");
-        System.out.println("5. EXIT");
+        System.out.println("3. EXIT");
         System.out.println("==============================");
         System.out.println("Masukkan angka: ");
 
@@ -189,17 +187,19 @@ public class Main {
 
         boolean gameOn = false;
         
-        while (menu != 5){
+        while (menu != 3){
             if (menu == 1){
                 //START GAME
                 gameOn = true;
                 Scanner scan = new Scanner(System.in);
                 System.out.println("GAME START");
+                System.out.println("");
                 System.out.println("Enter player 1 name : ");
                 String player1name = scan.nextLine();
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
                 System.out.println("Enter player 2 name : ");
                 String player2name = scan.nextLine();
+                System.out.println("");
                 System.out.println("Player 1 name : " + player1name);
                 System.out.println("Player 2 name : " + player2name);
 
@@ -317,10 +317,11 @@ public class Main {
                     boolean turnFinished = false;
                     while(!turnFinished){
                         System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
-                        System.out.println("Select action : ");
                         System.out.println("1. Move!!!");
                         System.out.println("2. Switch!!!");
                         System.out.println("3. View Current Monster's Status");
+                        System.out.println("4. View Current Game Info");
+                        System.out.printf("Select action : ");
                         select1 = scan.nextInt();
                         // move
                         if(select1 == 1){
@@ -343,29 +344,27 @@ public class Main {
                                 if (p1BisaMove) {
                                     System.out.printf("%s move : %n", p1ActiveMons.getName());
                                     for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
-                                        System.out.printf("%s%n", p1ActiveMons.getMoves().get(i).getName());
+                                        System.out.printf("%d. %s%n", i+1,p1ActiveMons.getMoves().get(i).getName());
                                     }
 
                                     // milih move
-                                    
                                     while (!p1PilihanMoveValid) {
                                         // input pilihan move
                                         System.out.printf("Pilih Move : ");
-                                        String pilmove = scan.nextLine();
+                                        int pilmove = scan.nextInt();
                                         // ngecek type move
-                                        for (int i = 0; i < p1ActiveMons.getMoves().size(); i++){
-                                            if (p1ActiveMons.getMoves().get(i).getName().equals(pilmove)){
-                                                if (p1ActiveMons.getMoves().get(i).getAmmunition() ==0){
-                                                    System.out.println("Amunisi habis.");
-                                                }
-                                                else{
-                                                    p1PilMove = i;
-                                                    p1PilihanMoveValid = true;
-                                                    System.out.println(pilmove + " telah dipilih");
-                                                    break;
-                                                }
-                                            }
+                                        if(pilmove < 1 || pilmove > p1ActiveMons.getMoves().size()){
+                                            System.out.println("salah pilih");
                                         }
+                                        else if (p1ActiveMons.getMoves().get(pilmove -1 ).getAmmunition() ==0){
+                                            System.out.println("Amunisi habis.");
+                                        }
+                                        else{
+                                            p1PilMove = pilmove-1;
+                                            p1PilihanMoveValid = true;
+                                            System.out.println(p1ActiveMons.getMoves().get(p1PilMove).getName() + " telah dipilih");
+                                        }
+                                        
                                     }
                                     
                                 }
@@ -393,6 +392,18 @@ public class Main {
                         else if (select1 == 3){
                             p1ActiveMons.printStats();
                         }
+                        else if (select1 == 4){
+                            System.out.printf("Turn skrng : %d%n",turn );
+                            System.out.println("Monster Player 1 yg aktif : "+ p1ActiveMons.getName());
+                            System.out.println("Monster Player 1 yg tidak aktif :");
+                            System.out.println("");
+                            for(int a = 0; a < p1.getListMonster().size() ; a++){
+                                if(p1.getListMonster().get(a).getId() != p1ActiveMons.getId()){
+                                    System.out.println(p1.getListMonster().get(a).getName());
+                                }
+                            }
+                            System.out.println("");
+                        }
                     }
 
                     
@@ -401,10 +412,11 @@ public class Main {
                     turnFinished = false;
                     while (!turnFinished){
                         System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
-                        System.out.println("Select action : ");
                         System.out.println("1. Move!!!");
                         System.out.println("2. Switch!!!");
                         System.out.println("3. View Current Monster's Status");
+                        System.out.println("4. View Current Game Info");
+                        System.out.printf("Select action : ");
                         select2 = scan.nextInt();
                         // move
                         if(select2 == 1){
@@ -427,29 +439,27 @@ public class Main {
                                 if (p2BisaMove) {
                                     System.out.printf("%s move : %n", p2ActiveMons.getName());
                                     for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
-                                        System.out.printf("%s%n", p2ActiveMons.getMoves().get(i).getName());
+                                        System.out.printf("%d. %s%n", i+1,p2ActiveMons.getMoves().get(i).getName());
                                     }
 
                                     // milih move
-                                    
                                     while (!p2PilihanMoveValid) {
                                         // input pilihan move
                                         System.out.printf("Pilih Move : ");
-                                        String pilmove = scan.nextLine();
+                                        int pilmove = scan.nextInt();
                                         // ngecek type move
-                                        for (int i = 0; i < p2ActiveMons.getMoves().size(); i++){
-                                            if (p2ActiveMons.getMoves().get(i).getName().equals(pilmove)){
-                                                if (p2ActiveMons.getMoves().get(i).getAmmunition() ==0){
-                                                    System.out.println("Amunisi habis.");
-                                                }
-                                                else{
-                                                    p2PilMove = i;
-                                                    p2PilihanMoveValid = true;
-                                                    System.out.println(pilmove + " telah dipilih");
-                                                }
-                                            }
+                                        if(pilmove < 1 || pilmove > p2ActiveMons.getMoves().size()){
+                                            System.out.println("salah pilih");
                                         }
-
+                                        else if (p2ActiveMons.getMoves().get(pilmove -1 ).getAmmunition() ==0){
+                                            System.out.println("Amunisi habis.");
+                                        }
+                                        else{
+                                            p2PilMove = pilmove-1;
+                                            p2PilihanMoveValid = true;
+                                            System.out.println(p2ActiveMons.getMoves().get(p2PilMove).getName() + " telah dipilih");
+                                        }
+                                        
                                     }
                                 }
                                 else {
@@ -474,6 +484,18 @@ public class Main {
                         }
                         else if(select2 == 3){
                             p2ActiveMons.printStats();
+                        }
+                        else if (select2 == 4){
+                            System.out.printf("Turn skrng : %d%n",turn );
+                            System.out.println("Monster Player 2 yg aktif : "+ p2ActiveMons.getName());
+                            System.out.println("Monster Player 2 yg tidak aktif :");
+                            System.out.println("");
+                            for(int a = 0; a < p2.getListMonster().size() ; a++){
+                                if(p2.getListMonster().get(a).getId() != p2ActiveMons.getId()){
+                                    System.out.println(p2.getListMonster().get(a).getName());
+                                }
+                            }
+                            System.out.println("");
                         }
                     }
 
@@ -665,24 +687,15 @@ public class Main {
             }
              else if (menu == 2){
                 System.out.println("Permainan dimainkan oleh 2 player. Masing-masing player akan mendapatkan 6 monster yang diberikan secara acak.");
-            }
-             else if (menu == 3){
-                if (gameOn = false){
-                    System.out.println("balbalalwlwd");
-                } else {
-                    System.out.println("Menu tidak tersedia. Silahkan Start game terlebih dahulu.");
-                }
-            }
-             else if (menu == 4){
-    
+                System.out.println("Dalam fase pertarungan, kedua pemain secara bergiliran memilih antara switch monster atau move.");
+                System.out.println("Untuk pilihan move, akan dieksekusi berdasarkan prioritas dan speed");
+                System.out.println("Kondisi menang adalah user dengan monster setidaknya 1 monster di akhir permainan");
             }
             System.out.println("MENU PERTARUNGAN");
             System.out.println("==============================");
             System.out.println("1. START GAME");
             System.out.println("2. HELP");
-            System.out.println("3. VIEW MONSTER INFO");
-            System.out.println("4. VIEW GAME INFO");
-            System.out.println("5. EXIT");
+            System.out.println("3. EXIT");
             System.out.println("==============================");
             System.out.println("Masukkan angka: ");
 
@@ -692,7 +705,5 @@ public class Main {
         System.out.println("Telah keluar dari aplikasi. Selamat Tinggal.");
 
         aplikasi.close();
-
-        
     }
 }

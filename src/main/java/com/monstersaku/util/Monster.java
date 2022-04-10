@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Monster {
+    private int id;
     private String name;
     private List<ElementType> elmtTypes = new ArrayList<>();
     private Stats baseStats;
@@ -17,8 +18,9 @@ public class Monster {
     private Double maxHp;
     private boolean isDead;
 
-    public Monster(String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
+    public Monster(int id ,String name, List<ElementType> elementTypes, Stats baseStats, List<Move> moves){
         
+        this.id = id;
         this.name = name;
         this.elmtTypes = elementTypes;
         this.baseStats = baseStats;
@@ -36,7 +38,9 @@ public class Monster {
     public String getName(){
         return this.name;
     }
-
+    public int getId(){
+        return this.id;
+    }
     public List<ElementType> getElementTypes(){
         return this.elmtTypes;
     }
@@ -128,7 +132,7 @@ public class Monster {
 
     public void printStats (){
         if (isDead){
-            System.out.println(name + "sudah mati");
+            System.out.println(name + " sudah mati");
         }
         else{
             System.out.println(name + "'s " + "Current Stats");
