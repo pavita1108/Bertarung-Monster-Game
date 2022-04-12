@@ -4,3 +4,5 @@ id,moveType;name;elementType;accuracy;priority;ammunition;target;effect
 3;STATUS;Burn;FIRE;90;1;10;ENEMY;BURN;0,0,0,0,0,0
 4;STATUS;Heal;NORMAL;90;1;10;OWN;-;25,0,0,0,0,0
 5;STATUS;Taunting;NORMAL;90;1;10;ENEMY;-;0,0,-1,0,-1,0
+6;STATUS;Sleep;NORMAL;90;1;10;ENEMY;SLEEP;0,0,0,0,0,0
+7;STATUS;Paralyze;NORMAL;70;1;10;ENEMY;PARALYZE;0,0,0,0,0,0

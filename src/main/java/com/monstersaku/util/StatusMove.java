@@ -61,7 +61,7 @@ public class StatusMove extends Move{
                         int max = 7;
                         int random_round = (int)Math.floor(Math.random()*(max-min+1)+min);
                         target.setSleepCounter(random_round+1);
-                        System.out.println("Terkena Sleep sebanyak" + random_round+1);
+                        System.out.println("Terkena Sleep sebanyak" + (random_round+1));
                     }
                     else if (this.status.equals("PARALYZE")){    
                         target.getStats().setSpeed(target.getStats().getSpeed()-(target.getStats().getSpeed()/2));

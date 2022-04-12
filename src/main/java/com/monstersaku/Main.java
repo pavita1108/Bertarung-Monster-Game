@@ -16,6 +16,7 @@ public class Main {
             "configs/element-type-effectivity-chart.csv"));
 
     public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
         //mulai baca csv pake try catch
         try{
             //baca movepool
@@ -191,7 +192,8 @@ public class Main {
             if (menu == 1){
                 //START GAME
                 gameOn = true;
-                Scanner scan = new Scanner(System.in);
+                boolean endgame = false;
+                
                 System.out.println("GAME START");
                 System.out.println("");
                 System.out.println("Enter player 1 name : ");
@@ -233,7 +235,6 @@ public class Main {
                 p1.printMonsters();
                 p2.printMonsters();
                 int turn = 0;
-                boolean endgame = false;
                 Monster p1ActiveMons = p1.getListMonster().get(0);
                 Monster p2ActiveMons = p2.getListMonster().get(0);
 
@@ -555,6 +556,31 @@ public class Main {
                                 else{
                                     System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang balik menggunakan" + p2ActiveMons.getMoves().get(p2PilMove).getName());
                                     p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
+                                    if (p1ActiveMons.getIsDead()){
+                                        System.out.printf("%s is Dead :(%n", p1ActiveMons.getName());
+                                        if (!p1.isLose()){
+                                            p1.printMonsters();
+                                            System.out.println("Choose New Monster Id: ");
+                                            int choosenId = scan.nextInt();
+                                            while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                if (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
+                                                    System.out.println("Monster sudah mati, silahkan pilih monster lain.");
+                                                    System.out.println("Choose Monster Id : ");
+                                                    choosenId = scan.nextInt();
+                                                }
+                                                else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                    System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
+                                                    System.out.println("Choose Monster Id : ");
+                                                    choosenId = scan.nextInt();
+                                                }
+                                            }
+                                            p1ActiveMons = p1.getListMonster().get(choosenId-1);
+                                            System.out.printf("%s's Active Monster : %s%n", p1.getNama(), p1ActiveMons.getName());
+                                        }
+                                        else{
+                                            endgame = true;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -603,8 +629,33 @@ public class Main {
                                     }
                                 }
                                 else{
-                                    System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p2PilMove).getName());
+                                    System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang balik menggunakan" + p1ActiveMons.getMoves().get(p1PilMove).getName());
                                     p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
+                                    if (p2ActiveMons.getIsDead()){
+                                        System.out.printf("%s is Dead :(%n", p2ActiveMons.getName());
+                                        if (!p2.isLose()){
+                                            p2.printMonsters();
+                                            System.out.println("Choose New Monster Id: ");
+                                            int choosenId = scan.nextInt();
+                                            while (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                if (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
+                                                    System.out.println("Monster sudah mati, silahkan pilih monster lain.");
+                                                    System.out.println("Choose Monster Id : ");
+                                                    choosenId = scan.nextInt();
+                                                }
+                                                else if (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                    System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
+                                                    System.out.println("Choose Monster Id : ");
+                                                    choosenId = scan.nextInt();
+                                                }
+                                            }
+                                            p2ActiveMons = p2.getListMonster().get(choosenId-1);
+                                            System.out.printf("%s's Active Monster : %s%n", p2.getNama(), p2ActiveMons.getName());
+                                        }
+                                        else{
+                                            endgame = true;
+                                        }
+                                    }
                                 }
                             }
                             
@@ -612,9 +663,9 @@ public class Main {
                     }
                     // kalo p1 doang yang move, p2 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
                     else if ((p1PilihanMoveValid == true) && (p2PilihanMoveValid == false)) {
-                        System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang menggunakan " + p1ActiveMons.getMoves().get(p1PilMove));
+                        System.out.println(p1ActiveMons.getName() + " milik Player 1 menyerang menggunakan " + p1ActiveMons.getMoves().get(p1PilMove).getName());
                         p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
-                        System.out.println(p2ActiveMons.getName() + " terkena serangan " + p1ActiveMons.getMoves().get(p1PilMove));
+                        System.out.println(p2ActiveMons.getName() + " terkena serangan " + p1ActiveMons.getMoves().get(p1PilMove).getName());
                         if (p2ActiveMons.getIsDead()){
                             System.out.printf("%s is Dead :(%n", p2ActiveMons.getName());
                             if (!p2.isLose()){
@@ -644,9 +695,9 @@ public class Main {
 
                     // kalo p2 doang yang move, p1 engga (karena cuma ngeswitch pas milih turn, atau karena efek stats condition)
                     else if ((p2PilihanMoveValid == true) && (p1PilihanMoveValid == false)) {
-                        System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang menggunakan " + p2ActiveMons.getMoves().get(p2PilMove));
+                        System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang menggunakan " + p2ActiveMons.getMoves().get(p2PilMove).getName());
                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                        System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove));
+                        System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove).getName());
                         if (p1ActiveMons.getIsDead()){
                             System.out.printf("%s is Dead :(%n", p1ActiveMons.getName());
                             if (!p1.isLose()){
@@ -679,11 +730,19 @@ public class Main {
                     System.out.println("Monster Player 1 : ");
                     p1ActiveMons.printStats();
                     System.out.println("Monster Player 2 : ");
-                    p1ActiveMons.printStats();
+                    p2ActiveMons.printStats();
 
+                    if (p1.isLose()){
+                        System.out.println("PLAYER 2 : "+p2.getNama()+ " MENANG YAYYYY");
+                        System.out.println("Player 1 : " + p1.getNama() + " coba lagi ya :(");
+                    }
+                    else if (p2.isLose()){
+                        System.out.println("PLAYER 1 : "+p1.getNama()+ " MENANG YAYYYY");
+                        System.out.println("Player 2 : " + p2.getNama() + " coba lagi ya :(");
+                    }
 
                 }
-                scan.close();
+                
             }
              else if (menu == 2){
                 System.out.println("Permainan dimainkan oleh 2 player. Masing-masing player akan mendapatkan 6 monster yang diberikan secara acak.");
@@ -691,6 +750,8 @@ public class Main {
                 System.out.println("Untuk pilihan move, akan dieksekusi berdasarkan prioritas dan speed");
                 System.out.println("Kondisi menang adalah user dengan monster setidaknya 1 monster di akhir permainan");
             }
+
+            
             System.out.println("MENU PERTARUNGAN");
             System.out.println("==============================");
             System.out.println("1. START GAME");
@@ -703,7 +764,7 @@ public class Main {
 
         }
         System.out.println("Telah keluar dari aplikasi. Selamat Tinggal.");
-
+        scan.close();
         aplikasi.close();
     }
 }
