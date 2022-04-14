@@ -442,6 +442,14 @@ public class Main {
                         //view current monster status
                         else if (select1 == 3){
                             p1ActiveMons.printStats();
+                            System.out.println("Status condition current monster: ");
+                            if (p1ActiveMons.isAnyConditionActive()) {
+                                p1ActiveMons.printActiveCondition();
+                                System.out.println("");
+                            }
+                            else {
+                                System.out.println("Current monster sehat wal a'fiat\n");
+                            }
                         }
                         else if (select1 == 4){
                             System.out.printf("Turn skrng : %d%n",turn );
@@ -541,6 +549,14 @@ public class Main {
                         }
                         else if(select2 == 3){
                             p2ActiveMons.printStats();
+                            System.out.println("Status condition current monster: ");
+                            if (p2ActiveMons.isAnyConditionActive()) {
+                                p2ActiveMons.printActiveCondition();
+                                System.out.println("");
+                            }
+                            else {
+                                System.out.println("Current monster sehat wal a'fiat\n");
+                            }
                         }
                         else if (select2 == 4){
                             System.out.printf("Turn skrng : %d%n",turn );

@@ -126,11 +126,26 @@ public class Monster {
         // method untuk cek apakah monster ada condition yang aktif
 
     public boolean isAnyConditionActive() {
-        if (getIsBurn() == true || getIsPoison() == true || getIsSleep() == true || getIsParalyze() == true) {
+        if (this.getIsBurn() == true || this.getIsPoison() == true || this.getIsSleep() == true || this.getIsParalyze() == true) {
             return true;
         }
         else {
             return false;
+        }
+    }
+
+    public void printActiveCondition() {
+        if (this.getIsBurn()) {
+            System.out.println("Burn");
+        }
+        else if (this.getIsPoison()) {
+            System.out.println("Poison");
+        }
+        else if (this.getIsParalyze()) {
+            System.out.println("Paralyze");
+        }
+        else if (this.getIsSleep()) {
+            System.out.println("Sleep");
         }
     }
 
