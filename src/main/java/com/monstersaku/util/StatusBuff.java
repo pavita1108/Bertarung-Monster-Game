@@ -1,35 +1,43 @@
 package com.monstersaku.util;
-import java.util.Map;
-import java.util.stream.Stream;
-import java.util.stream.Collectors;
 
 public class StatusBuff {
-    private Map<Integer, Double> statusFactor = Stream.of(new double[][] { { -4, -3, -2, -1, 0, 1, 2, 3, 4 }, {2/6, 2/5, 2/4, 2/3, 1, 3/2, 4/2, 5/2, 6/2 }, }).collect(Collectors.toMap(data -> (int) data[0], data -> data[1]));
     private int attack;
     private int defense;
     private int specialAttack;
     private int specialDefense;
     private int speed;
 
-    public StatusBuff(int a, int d, int sa, int sd, int s){
-        this.attack = a;
-        this.defense = d;
-        this.specialAttack = sa;
-        this.specialDefense = sd;
-        this.speed = s;
+    public StatusBuff(){
+        this.attack = 0;
+        this.defense = 0;
+        this.specialAttack = 0;
+        this.specialDefense = 0;
+        this.speed = 0;
     }
 
-
-    public double getFactor(int rnd){
-        return statusFactor.get(rnd);
-    }
-
-    public void statsCalculation(Stats stats){
-        stats.setAttack(stats.getAttack()*getFactor(attack));
-        stats.setDefense(stats.getDefense()*getFactor(defense));
-        stats.setSpesialAttack(stats.getSpesialAttack()*getFactor(specialAttack));
-        stats.setSpesialDefense(stats.getSpesialDefense()*getFactor(specialDefense));
-        stats.setSpeed(stats.getSpeed()*getFactor(speed));
+    public static double getFactor(int rnd) {
+        switch (rnd) {
+            case -4:
+                return ((double) 2/6);
+            case -3:
+                return ((double) 2/5);
+            case -2:
+                return ((double) 2/4);
+            case -1:
+                return ((double) 2/3);
+            case 0:
+                return ((double) 1);
+            case 1:
+                return ((double) 3/2);
+            case 2:
+                return ((double) 4/2);
+            case 3:
+                return ((double) 5/2);
+            case 4:
+                return ((double) 6/2);
+            default:
+                return ((double) 1);
+        }
     }
 
 }
