@@ -162,6 +162,14 @@ public class Monster {
             System.out.println("Special Defense: " + baseStats.getSpesialDefense());
             System.out.println("Speed: " + baseStats.getSpeed());
             System.out.println("");
+            System.out.println("Status condition " + name +": ");
+            if (this.isAnyConditionActive()) {
+                this.printActiveCondition();
+                System.out.println("");
+            }
+            else {
+                System.out.println(name +" sehat wal a'fiat\n");
+            }
         }
         
     }

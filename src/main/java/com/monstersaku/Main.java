@@ -442,23 +442,40 @@ public class Main {
                         //view current monster status
                         else if (select1 == 3){
                             p1ActiveMons.printStats();
-                            System.out.println("Status condition current monster: ");
-                            if (p1ActiveMons.isAnyConditionActive()) {
-                                p1ActiveMons.printActiveCondition();
-                                System.out.println("");
-                            }
-                            else {
-                                System.out.println("Current monster sehat wal a'fiat\n");
-                            }
                         }
                         else if (select1 == 4){
                             System.out.printf("Turn skrng : %d%n",turn );
+
+                            System.out.println("=====================================");
+                            System.out.println(p1.getNama() + "'s Information");
+                            System.out.println("=====================================");
                             System.out.println("Monster Player 1 yg aktif : "+ p1ActiveMons.getName());
+                            p1ActiveMons.printStats();
+                            System.out.println("=====================================");
                             System.out.println("Monster Player 1 yg tidak aktif :");
                             System.out.println("");
                             for(int a = 0; a < p1.getListMonster().size() ; a++){
                                 if(p1.getListMonster().get(a).getId() != p1ActiveMons.getId()){
                                     System.out.println(p1.getListMonster().get(a).getName());
+                                    p1.getListMonster().get(a).printStats();
+                                    System.out.println("=====================================");
+                                }
+                            }
+                            System.out.println("");
+
+                            System.out.println("=====================================");
+                            System.out.println(p2.getNama() + "'s Information");
+                            System.out.println("=====================================");
+                            System.out.println("Monster Player 2 yg aktif : "+ p2ActiveMons.getName());
+                            p2ActiveMons.printStats();
+                            System.out.println("=====================================");
+                            System.out.println("Monster Player 2 yg tidak aktif :");
+                            System.out.println("");
+                            for(int a = 0; a < p2.getListMonster().size() ; a++){
+                                if(p2.getListMonster().get(a).getId() != p2ActiveMons.getId()){
+                                    System.out.println(p2.getListMonster().get(a).getName());
+                                    p2.getListMonster().get(a).printStats();
+                                    System.out.println("=====================================");
                                 }
                             }
                             System.out.println("");
@@ -549,23 +566,40 @@ public class Main {
                         }
                         else if(select2 == 3){
                             p2ActiveMons.printStats();
-                            System.out.println("Status condition current monster: ");
-                            if (p2ActiveMons.isAnyConditionActive()) {
-                                p2ActiveMons.printActiveCondition();
-                                System.out.println("");
-                            }
-                            else {
-                                System.out.println("Current monster sehat wal a'fiat\n");
-                            }
                         }
                         else if (select2 == 4){
                             System.out.printf("Turn skrng : %d%n",turn );
+
+                            System.out.println("=====================================");
+                            System.out.println(p1.getNama() + "'s Information");
+                            System.out.println("=====================================");
+                            System.out.println("Monster Player 1 yg aktif : "+ p1ActiveMons.getName());
+                            p1ActiveMons.printStats();
+                            System.out.println("=====================================");
+                            System.out.println("Monster Player 1 yg tidak aktif :");
+                            System.out.println("");
+                            for(int a = 0; a < p1.getListMonster().size() ; a++){
+                                if(p1.getListMonster().get(a).getId() != p1ActiveMons.getId()){
+                                    System.out.println(p1.getListMonster().get(a).getName());
+                                    p1.getListMonster().get(a).printStats();
+                                    System.out.println("=====================================");
+                                }
+                            }
+                            System.out.println("");
+
+                            System.out.println("=====================================");
+                            System.out.println(p2.getNama() + "'s Information");
+                            System.out.println("=====================================");
                             System.out.println("Monster Player 2 yg aktif : "+ p2ActiveMons.getName());
+                            p2ActiveMons.printStats();
+                            System.out.println("=====================================");
                             System.out.println("Monster Player 2 yg tidak aktif :");
                             System.out.println("");
                             for(int a = 0; a < p2.getListMonster().size() ; a++){
                                 if(p2.getListMonster().get(a).getId() != p2ActiveMons.getId()){
                                     System.out.println(p2.getListMonster().get(a).getName());
+                                    p2.getListMonster().get(a).printStats();
+                                    System.out.println("=====================================");
                                 }
                             }
                             System.out.println("");
