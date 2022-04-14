@@ -118,6 +118,10 @@ public class Monster {
     public void setSleepCounter(int num) {
         this.sleepCounter = num;
     }
+
+    public void setIsDead(boolean cond) {
+        this.isDead = cond;
+    }
     
         // method untuk cek apakah monster ada condition yang aktif
 

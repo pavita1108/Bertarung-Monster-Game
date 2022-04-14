@@ -267,6 +267,10 @@ public class Main {
                     boolean p2BisaMove = true;
 
                     turn++;
+
+
+                    System.out.println("==================== INFO STATUS MONSTER PERGANTIAN PUTARAN TURN ====================\n");
+
                     /* Ngecek semua monster p1 dan p2 status condition sleep
                         setiap ada monster yang condition sleep
                         kurangin atribut sleepCounternya
@@ -276,8 +280,10 @@ public class Main {
                     for (int i = 0; i < p1.getJumlahMonster(); i++){
                         if (p1.getListMonster().get(i).getIsSleep()){   
                             p1.getListMonster().get(i).setSleepCounter(p1.getListMonster().get(i).getSleepCounter()-1);
+                            System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 sedang sleep, karena turn berputar status sleep berkurang 1");
                             if (p1.getListMonster().get(i).getSleepCounter() == 0){
                                 p1.getListMonster().get(i).setIsSleep(false);
+                                System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 sudah bangkit");
                             }
                         }
                         
@@ -285,8 +291,10 @@ public class Main {
                     for (int i = 0; i < p2.getJumlahMonster(); i++){
                         if (p2.getListMonster().get(i).getIsSleep()){   
                             p2.getListMonster().get(i).setSleepCounter(p2.getListMonster().get(i).getSleepCounter()-1);
+                            System.out.println("Monster " + p2.getListMonster().get(i).getName() + " milik player 2 sedang sleep, karena turn berputar status sleep berkurang 1");
                             if (p2.getListMonster().get(i).getSleepCounter() == 0){
                                 p2.getListMonster().get(i).setIsSleep(false);
+                                System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 sudah bangkit");
                             }
                         }
                     }
@@ -296,13 +304,27 @@ public class Main {
                     
                     */
                     for (int i = 0; i < p1.getJumlahMonster(); i++){
-                        if (p1.getListMonster().get(i).getIsBurn()){   
+                        if ((p1.getListMonster().get(i).getIsBurn()) && (p1.getListMonster().get(i).getStats().getHealthPoint() > 0)){   
                             StatusCondition.Burn(p1.getListMonster().get(i));
+                            System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 berkurang HP karena efek burn");
+                            if (p1.getListMonster().get(i).getStats().getHealthPoint() <= 0) {
+                                System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 mati karena efek burn");
+                                p1.getListMonster().get(i).getStats().setHealtPoint(0);
+                                p1.getListMonster().get(i).setIsDead(true);
+                                p1.getListMonster().get(i).setIsBurn(false);
+                            }
                         }    
                     }
                     for (int i = 0; i < p2.getJumlahMonster(); i++){
-                        if (p2.getListMonster().get(i).getIsBurn()){   
+                        if ((p2.getListMonster().get(i).getIsBurn()) && (p2.getListMonster().get(i).getStats().getHealthPoint() > 0)){   
                             StatusCondition.Burn(p2.getListMonster().get(i));
+                            System.out.println("Monster " + p2.getListMonster().get(i).getName() + " milik player 2 berkurang HP karena efek burn");
+                            if (p2.getListMonster().get(i).getStats().getHealthPoint() <= 0) {
+                                System.out.println("Monster " + p2.getListMonster().get(i).getName() + " milik player 2 mati karena efek burn");
+                                p2.getListMonster().get(i).getStats().setHealtPoint(0);
+                                p2.getListMonster().get(i).setIsDead(true);
+                                p2.getListMonster().get(i).setIsBurn(false);
+                            }
                         }  
                     }
 
@@ -311,17 +333,31 @@ public class Main {
                     
                     */
                     for (int i = 0; i < p1.getJumlahMonster(); i++){
-                        if (p1.getListMonster().get(i).getIsPoison()){   
+                        if ((p1.getListMonster().get(i).getIsPoison()) && (p1.getListMonster().get(i).getStats().getHealthPoint() > 0)){   
                             StatusCondition.Poison(p1.getListMonster().get(i));
+                            System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 berkurang HP karena efek poison");
+                            if (p1.getListMonster().get(i).getStats().getHealthPoint() <= 0) {
+                                System.out.println("Monster " + p1.getListMonster().get(i).getName() + " milik player 1 mati karena efek poison");
+                                p1.getListMonster().get(i).getStats().setHealtPoint(0);
+                                p1.getListMonster().get(i).setIsDead(true);
+                                p1.getListMonster().get(i).setIsPoison(false);
+                            }
                         }    
                     }
                     for (int i = 0; i < p2.getJumlahMonster(); i++){
-                        if (p2.getListMonster().get(i).getIsPoison()){   
+                        if ((p2.getListMonster().get(i).getIsPoison()) && (p2.getListMonster().get(i).getStats().getHealthPoint() > 0)){   
                             StatusCondition.Poison(p2.getListMonster().get(i));
+                            System.out.println("Monster " + p2.getListMonster().get(i).getName() + " milik player 2 berkurang HP karena efek poison");
+                            if (p2.getListMonster().get(i).getStats().getHealthPoint() <= 0) {
+                                System.out.println("Monster " + p2.getListMonster().get(i).getName() + " milik player 2 mati karena efek poison");
+                                p2.getListMonster().get(i).getStats().setHealtPoint(0);
+                                p2.getListMonster().get(i).setIsDead(true);
+                                p2.getListMonster().get(i).setIsPoison(false);
+                            }
                         }  
                     }
 
-
+                    System.out.println("\n==================== TURN KE- "+ turn +" ====================\n");
 
                     // PLAYER 1 nentuin TURN (BELUM EKSEKUSI)
                     boolean turnFinished = false;
@@ -331,7 +367,7 @@ public class Main {
                         System.out.println("2. Switch!!!");
                         System.out.println("3. View Current Monster's Status");
                         System.out.println("4. View Current Game Info");
-                        System.out.printf("Select action : ");
+                        System.out.printf("Player 1 select action : ");
                         select1 = scan.nextInt();
                         // move
                         if(select1 == 1){
@@ -426,7 +462,7 @@ public class Main {
                         System.out.println("2. Switch!!!");
                         System.out.println("3. View Current Monster's Status");
                         System.out.println("4. View Current Game Info");
-                        System.out.printf("Select action : ");
+                        System.out.printf("Player 2 select action : ");
                         select2 = scan.nextInt();
                         // move
                         if(select2 == 1){
