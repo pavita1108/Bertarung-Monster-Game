@@ -241,6 +241,7 @@ public class Main {
                 }
                 Player p1 = new Player(player1name, listOfPlayer1Monsters);
                 Player p2 = new Player(player2name, listOfPlayer2Monsters);
+                System.out.println("==================== PEMBAGIAN MONSTER ====================\n");
                 p1.printMonsters();
                 p2.printMonsters();
                 int turn = 0;
@@ -267,9 +268,6 @@ public class Main {
                     boolean p2BisaMove = true;
 
                     turn++;
-
-
-                    System.out.println("==================== INFO STATUS MONSTER PERGANTIAN PUTARAN TURN ====================\n");
 
                     /* Ngecek semua monster p1 dan p2 status condition sleep
                         setiap ada monster yang condition sleep
@@ -423,16 +421,23 @@ public class Main {
 
                         // switch pokemon
                         else if (select1 == 2){
-                            p1.printMonsters();
-                            System.out.println("Choose Id Monster : ");
-                            int sel = scan.nextInt();
-                            
-                            // bikin reset status buff untuk monster yang diswitch
+                            if (p1.getJumlahMonster() == 1){
+                                System.out.println("Udah tinggal 1 monsternya :( ga bisa switch");
+                            }
+                            else{
+                                p1.printMonsters();
+                                System.out.println("Choose Id Monster : ");
+                                int sel = scan.nextInt();
+                                
+                                // bikin reset status buff untuk monster yang diswitch
 
-                            // ngerubah aktif monster
-                            p1ActiveMons = p1.getListMonster().get(sel-1);
-                            System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                                // ngerubah aktif monster
+                                p1ActiveMons = p1.getListMonster().get(sel-1);
+                                System.out.printf("Player 1 Active Monster : %s%n", p1ActiveMons.getName());
+                                
+                            }
                             turnFinished = true;
+                            
                         }
                         //view current monster status
                         else if (select1 == 3){
@@ -517,15 +522,21 @@ public class Main {
 
                         // switch pokemon
                         else if (select2 == 2){
-                            p2.printMonsters();
-                            System.out.println("Choose Id Monster : ");
-                            int sel = scan.nextInt();
+                            if (p2.getJumlahMonster() == 1){
+                                System.out.println("Udah tinggal 1 monsternya :( ga bisa switch");
+                            }
+                            else{
+                                p2.printMonsters();
+                                System.out.println("Choose Id Monster : ");
+                                int sel = scan.nextInt();
+                                
+                                // bikin reset status buff untuk monster yang diswitch
 
-                            // bikin reset status buff untuk monster yang diswitch
-
-                            // ngerubah aktif monster
-                            p2ActiveMons = p2.getListMonster().get(sel-1);
-                            System.out.printf("Player 2 Active Monster : %s%n", p2ActiveMons.getName());
+                                // ngerubah aktif monster
+                                p2ActiveMons = p2.getListMonster().get(sel-1);
+                                System.out.printf("Player 1 Active Monster : %s%n", p2ActiveMons.getName());
+                                
+                            }
                             turnFinished = true;
                         }
                         else if(select2 == 3){
@@ -557,18 +568,19 @@ public class Main {
                             p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
                             //cek mati ato nggak
                             if (p2ActiveMons.getIsDead()){
+                                p2.setJumlahMonster(p2.getJumlahMonster()-1);
                                 System.out.printf("%s is Dead :(%n", p2ActiveMons.getName());
                                 if (!p2.isLose()){
                                     p2.printMonsters();
                                     System.out.println("Choose New Monster Id: ");
                                     int choosenId = scan.nextInt();
-                                    while (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                    while (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p2.getJumlahMonster() != 1)){
                                         if (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
                                             System.out.println("Monster sudah mati, silahkan pilih monster lain.");
                                             System.out.println("Choose Monster Id : ");
                                             choosenId = scan.nextInt();
                                         }
-                                        else if (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                        else if (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p2.getJumlahMonster() != 1){
                                             System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
                                             System.out.println("Choose Monster Id : ");
                                             choosenId = scan.nextInt();
@@ -607,13 +619,13 @@ public class Main {
                                             p1.printMonsters();
                                             System.out.println("Choose New Monster Id: ");
                                             int choosenId = scan.nextInt();
-                                            while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                            while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1)){
                                                 if (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
                                                     System.out.println("Monster sudah mati, silahkan pilih monster lain.");
                                                     System.out.println("Choose Monster Id : ");
                                                     choosenId = scan.nextInt();
                                                 }
-                                                else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1){
                                                     System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
                                                     System.out.println("Choose Monster Id : ");
                                                     choosenId = scan.nextInt();
@@ -633,18 +645,19 @@ public class Main {
                             System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang duluan");
                             p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                             if (p1ActiveMons.getIsDead()){
+                                p1.setJumlahMonster(p1.getJumlahMonster()-1);
                                 System.out.printf("%s is Dead :(%n", p1ActiveMons.getName());
                                 if (!p1.isLose()){
                                     p1.printMonsters();
                                     System.out.println("Choose New Monster Id: ");
                                     int choosenId = scan.nextInt();
-                                    while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                    while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1)){
                                         if (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
                                             System.out.println("Monster sudah mati, silahkan pilih monster lain.");
                                             System.out.println("Choose Monster Id : ");
                                             choosenId = scan.nextInt();
                                         }
-                                        else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                        else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1){
                                             System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
                                             System.out.println("Choose Monster Id : ");
                                             choosenId = scan.nextInt();
@@ -682,13 +695,13 @@ public class Main {
                                             p2.printMonsters();
                                             System.out.println("Choose New Monster Id: ");
                                             int choosenId = scan.nextInt();
-                                            while (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                            while (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p2.getJumlahMonster() != 1)){
                                                 if (p2.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
                                                     System.out.println("Monster sudah mati, silahkan pilih monster lain.");
                                                     System.out.println("Choose Monster Id : ");
                                                     choosenId = scan.nextInt();
                                                 }
-                                                else if (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                                else if (p2.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p2.getJumlahMonster() != 1){
                                                     System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
                                                     System.out.println("Choose Monster Id : ");
                                                     choosenId = scan.nextInt();
@@ -712,6 +725,7 @@ public class Main {
                         p1ActiveMons.getMoves().get(p1PilMove).applyEffect(p1ActiveMons, p2ActiveMons, listEffectivity);
                         System.out.println(p2ActiveMons.getName() + " terkena serangan " + p1ActiveMons.getMoves().get(p1PilMove).getName());
                         if (p2ActiveMons.getIsDead()){
+                            p2.setJumlahMonster(p2.getJumlahMonster()-1);
                             System.out.printf("%s is Dead :(%n", p2ActiveMons.getName());
                             if (!p2.isLose()){
                                 p2.printMonsters();
@@ -744,18 +758,19 @@ public class Main {
                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
                         System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove).getName());
                         if (p1ActiveMons.getIsDead()){
+                            p1.setJumlahMonster(p1.getJumlahMonster()-1);
                             System.out.printf("%s is Dead :(%n", p1ActiveMons.getName());
                             if (!p1.isLose()){
                                 p1.printMonsters();
                                 System.out.println("Choose New Monster Id: ");
                                 int choosenId = scan.nextInt();
-                                while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                while (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0 || (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1)){
                                     if (p1.getListMonster().get(choosenId-1).getStats().getHealthPoint() <= 0){   
                                         System.out.println("Monster sudah mati, silahkan pilih monster lain.");
                                         System.out.println("Choose Monster Id : ");
                                         choosenId = scan.nextInt();
                                     }
-                                    else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0){
+                                    else if (p1.getListMonster().get(choosenId-1).getSleepCounter() > 0 && p1.getJumlahMonster() != 1){
                                         System.out.println("Monster sedang tertidur, silahkan pilih monster lain.");
                                         System.out.println("Choose Monster Id : ");
                                         choosenId = scan.nextInt();
@@ -769,7 +784,9 @@ public class Main {
                             }
                         }
                     }
+                    System.out.println("");
 
+                    System.out.println("==================== INFO STATUS MONSTER PERGANTIAN PUTARAN TURN ====================\n");
 
                     System.out.println("Kondisi monster sekarang :");
                     System.out.println("Monster Player 1 : ");
