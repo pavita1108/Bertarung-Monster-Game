@@ -44,10 +44,14 @@ public class StatusMove extends Move{
             if (super.getTarget().equals("OWN")){
                 if (this.statsBuff != null){
                     statsBuffCalculation(attacker);
+                    System.out.println("Buff berhasil");
                 }
-                Double temp = attacker.getStats().getHealthPoint() + ((this.hpeffect * attacker.getMaxHP())/100);
-                attacker.getStats().setHealtPoint(temp);
-                System.out.println("Heal berhasil menambah HP");
+                else{
+                    Double temp = attacker.getStats().getHealthPoint() + ((this.hpeffect * attacker.getMaxHP())/100);
+                    attacker.getStats().setHealtPoint(temp);
+                    System.out.println("Heal berhasil menambah HP");
+                }
+                
             }
             else if (super.getTarget().equals("ENEMY")){
                 if (this.statsBuff != null){
@@ -58,9 +62,7 @@ public class StatusMove extends Move{
                 if (!target.getIsBurn() && !target.getIsPoison() && !target.getIsSleep() && !target.getIsParalyze()){
                     if (this.status.equals("BURN")){   
                         target.setIsBurn(true); 
-                        target.getStats().setHealtPoint(target.getStats().getHealthPoint()-(target.getMaxHP()/8));  
-                        target.getStats().setAttack(target.getStats().getAttack()/2);
-                        target.getStats().setSpesialAttack(target.getStats().getSpesialAttack()/2);             
+                        target.getStats().setHealtPoint(target.getStats().getHealthPoint()-(target.getMaxHP()/8));         
                         System.out.println("Terkena Burn");
                     }
                     else if (this.status.equals("POISON")){
