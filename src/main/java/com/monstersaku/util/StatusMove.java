@@ -58,7 +58,7 @@ public class StatusMove extends Move{
                 if (!target.getIsBurn() && !target.getIsPoison() && !target.getIsSleep() && !target.getIsParalyze()){
                     if (this.status.equals("BURN")){   
                         target.setIsBurn(true); 
-                        target.getStats().setHealtPoint(target.getStats().getHealthPoint()-(target.getMaxHP()/8));    
+                        target.getStats().setHealtPoint(target.getStats().getHealthPoint()-(target.getMaxHP()/8));  
                         target.getStats().setAttack(target.getStats().getAttack()/2);
                         target.getStats().setSpesialAttack(target.getStats().getSpesialAttack()/2);             
                         System.out.println("Terkena Burn");

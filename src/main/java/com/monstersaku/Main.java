@@ -913,7 +913,7 @@ public class Main {
                     else if ((p2PilihanMoveValid == true) && (p1PilihanMoveValid == false) && !endgame) {
                         System.out.println(p2ActiveMons.getName() + " milik Player 2 menyerang menggunakan " + p2ActiveMons.getMoves().get(p2PilMove).getName());
                         p2ActiveMons.getMoves().get(p2PilMove).applyEffect(p2ActiveMons, p1ActiveMons, listEffectivity);
-                        System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p1PilMove).getName());
+                        System.out.println(p1ActiveMons.getName() + " terkena serangan " + p2ActiveMons.getMoves().get(p2PilMove).getName());
                         if (p1ActiveMons.getIsDead()){
                             p1.setJumlahMonster(p1.getJumlahMonster()-1);
                             System.out.printf("%s is Dead :(%n", p1ActiveMons.getName());

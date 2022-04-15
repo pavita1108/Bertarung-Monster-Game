@@ -21,7 +21,7 @@ public class DefaultMove extends Move{
         //damage
         double damage= (double)Math.floor(basepower * (attacker.getStats().getAttack()/target.getStats().getDefense() + 2 ) * Math.random() * effectivity *burn);
         target.getStats().setHealtPoint(target.getStats().getHealthPoint() - damage);
-        attacker.getStats().setHealtPoint(attacker.getMaxHP()/4);
+        attacker.getStats().setHealtPoint(attacker.getStats().getHealthPoint() -  (attacker.getMaxHP()/4));
         super.setAmmunition(super.getAmmunition() - 1);
     }
 
